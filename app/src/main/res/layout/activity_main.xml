@@ -101,7 +101,7 @@
                 android:layout_marginLeft="25px"
                 android:layout_marginTop="30px"
                 android:layout_marginRight="120px"
-                android:background="@color/colorAccent"
+                android:background="#FFE21D3A"
                 android:paddingLeft="50px"
                 android:text="Hinzufügen"
                 android:textColor="#FF111111" />
@@ -188,7 +188,7 @@
                 android:layout_marginLeft="400px"
                 android:layout_marginRight="25px"
                 android:layout_weight="1"
-                android:background="@color/colorAccent"
+                android:background="#FFE21D3A"
                 android:paddingRight="25px"
                 android:text="Start"
                 android:textColor="#FF111111" />
