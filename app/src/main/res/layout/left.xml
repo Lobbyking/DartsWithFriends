@@ -24,7 +24,7 @@
                 android:gravity="center"
                 android:paddingTop="40px"
                 android:text="Darts with Friends"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#111111"
                 android:textColorLink="#00FF3C3C"
                 android:textSize="32sp" />
         </TableRow>
