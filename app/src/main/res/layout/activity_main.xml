@@ -85,7 +85,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#7E111111"
                 android:textSize="28sp" />
         </TableRow>
 
