@@ -85,14 +85,14 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="28sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
+            android:background="#20B451">
 
             <Button
                 android:id="@+id/addPlayer_btn"
