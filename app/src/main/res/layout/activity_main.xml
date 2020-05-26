@@ -83,8 +83,8 @@
                 android:layout_marginRight="25px"
                 android:layout_weight="3"
                 android:ems="10"
+                android:hint="Name"
                 android:inputType="textPersonName"
-                android:text="Name"
                 android:textColor="#7E111111"
                 android:textSize="28sp" />
         </TableRow>
