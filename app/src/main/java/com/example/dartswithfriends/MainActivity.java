@@ -11,14 +11,12 @@ import androidx.preference.PreferenceManager;
 
 import com.example.dartswithfriends.preferences.MySettingsActivity;
 
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
 
     //    Preferences
     private SharedPreferences prefs;
     private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener;
-    private static final int RQ_PREFERENCES = 87624;
+    private static final int RQ_PREFERENCES = 8764;
     private boolean darkmode;
     private boolean notifications;
     private boolean gps;
@@ -30,26 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
 //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
-                MainActivity.this.preferenceChanged(sharedPrefs, key);
-            }
-        };
-        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+//        preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+//            @Override
+//            public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+//                MainActivity.this.preferenceChanged(sharedPrefs, key);
+//            }
+//        };
+//        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
     }
 
 //    Preferences
-    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
-        Map<String, ?> allEntries = sharedPrefs.getAll();
-        if (allEntries.get(key) instanceof Boolean) {
-            darkmode = sharedPrefs.getBoolean(key, true);
-        }else if (allEntries.get(key) instanceof Boolean){
-
-        }else if (allEntries.get(key) instanceof Boolean){
-
-        }
-    }
+//    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
+//        Map<String, ?> allEntries = sharedPrefs.getAll();
+//        if (allEntries.get(key) instanceof Boolean) {
+//            darkmode = sharedPrefs.getBoolean(key, true);
+//        }else if (allEntries.get(key) instanceof Boolean){
+//
+//        }else if (allEntries.get(key) instanceof Boolean){
+//
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.preferences:
+            case R.id.pref:
                 Intent intent = new Intent(this, MySettingsActivity.class);
                 startActivityForResult(intent, RQ_PREFERENCES);
                 break;
