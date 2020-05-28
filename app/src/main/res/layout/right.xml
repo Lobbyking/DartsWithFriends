@@ -58,7 +58,7 @@
             <ListView
                 android:id="@+id/Spiele_listView"
                 android:layout_width="match_parent"
-                android:layout_height="620dp"
+                android:layout_height="600dp"
                 android:layout_weight="1"
                 android:background="#4CAF50" />
         </TableRow>
@@ -68,14 +68,14 @@
             android:layout_height="match_parent"
             android:background="#4CAF50">
 
-            <TextView
-                android:id="@+id/textView"
+            <Button
+                android:id="@+id/rightBackToMid_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#4CAF50"
-                android:text="   Start"
-                android:textColor="#111111"
-                android:textSize="20sp" />
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="170dp"
+                android:background="#FFE21D3A"
+                android:text="Start" />
         </TableRow>
 
     </TableLayout>
