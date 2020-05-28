@@ -71,7 +71,7 @@
                 android:id="@+id/leftBackToMid_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="320dp"
+                android:layout_marginLeft="319dp"
                 android:background="#FFE21D3A"
                 android:text="Start" />
         </TableRow>
