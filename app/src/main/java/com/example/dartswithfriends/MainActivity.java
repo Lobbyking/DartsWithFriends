@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView playersListView;
     private ArrayList<String> playerNames = new ArrayList<>();
     private ArrayAdapter<String> aa;
-    private ArrayList<Player> TakenPlayers = new ArrayList<>();
+    private ArrayList<Player> takenPlayers = new ArrayList<>();
+    private CheckBox cb501;
+    private CheckBox cb301;
 
     //    Preferences
     private SharedPreferences prefs;
@@ -71,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playersListView.setAdapter(aa);
         addPlayer.setOnClickListener(this);
         startGame.setOnClickListener(this);
-        final CheckBox cb301 = findViewById(R.id.cB301_checkBox);
-        final CheckBox cb501 = findViewById(R.id.cB501_checkBox);
+        cb301 = findViewById(R.id.cB301_checkBox);
+        cb501 = findViewById(R.id.cB501_checkBox);
 
         cb301.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -99,22 +102,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String takenName = (String) (parent.getItemAtPosition(position));
                 if(takenName.contains("--Taken--")){
                     takenName = takenName.replaceAll("--Taken--", "");
-                }else{
-                    takenName = takenName + "--Taken--";
-
-                    ArrayList<String> temp = new ArrayList<>();
-                    for(int i = 0; i< playerNames.size(); i++){
-                        if(i == position){
-                            temp.add(takenName);
-                        }else{
-                            temp.add(playerNames.get(i));
+                    for(Player p: players){
+                        if(p.getName().equals(takenName)){
+                            takenPlayers.remove(p);
                         }
                     }
-                    playerNames = new ArrayList<>();
-                    playerNames = temp;
-                    setView(playerNames);
+                }else{
+                    takenName = takenName + "--Taken--";
+                    takenPlayers.add(players.get(position));
                 }
-
+                ArrayList<String> temp = new ArrayList<>();
+                for(int i = 0; i< playerNames.size(); i++){
+                    if(i == position){
+                        temp.add(takenName);
+                    }else{
+                        temp.add(playerNames.get(i));
+                    }
+                }
+                playerNames = new ArrayList<>();
+                playerNames = temp;
+                setView(playerNames);
             }
         });
 
@@ -153,10 +160,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
             schreiben(players);
         }else if(v.getId() == startGame.getId()){
+            if(cb501.isChecked()){
+                playGame(501, takenPlayers);
+            }else if(cb301.isChecked()){
+                playGame(301, takenPlayers);
+            }else{
+                Toast.makeText(this, "Du musst eine der CheckBoxes auswählen.", Toast.LENGTH_LONG).show();
+            }
 
         }else{
 
         }
+    }
+
+    public void playGame(int points, ArrayList<Player> takenPlayers){
+
     }
 
     private ArrayList<Player> einlesen(){
