@@ -2,7 +2,13 @@ package com.example.dartswithfriends;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +17,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TableLayout;
+
+import com.example.dartswithfriends.Preferences.MySettingsActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,6 +28,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +39,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> playerNames = new ArrayList<>();
     private ArrayAdapter<String> aa;
     private ArrayList<Player> TakenPlayers = new ArrayList<>();
+
+    //    Preferences
+    private SharedPreferences prefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener;
+    private static final int RQ_PREFERENCES = 8764;
+    private boolean darkmode;
+    private boolean notifications;
+    private boolean gps;
+
+
+    //    Darkmode
+    TableLayout start_screen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +114,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //        Preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+                MainActivity.this.preferenceChanged(sharedPrefs, key);
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+
+        start_screen = findViewById(R.id.start_screen);
+
+        darkmode = prefs.getBoolean("darkmode", false);
+        notifications = prefs.getBoolean("notes", true);
+        gps = prefs.getBoolean("gps", true);
+
+        setDarkMode();
+
         }
 
 
@@ -148,5 +188,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setView(ArrayList<String> temp) {
         aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, temp);
         playersListView.setAdapter(aa);
+    }
+
+    //    Preferences
+    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
+        Map<String, ?> allEntries = sharedPrefs.getAll();
+        if(key.equals("darkmode")) {
+            darkmode = sharedPrefs.getBoolean(key, false);
+            setDarkMode();
+        }else if(key.equals("notes")){
+            notifications = sharedPrefs.getBoolean(key,true);
+        }else if(key.equals("gps")){
+            gps = sharedPrefs.getBoolean(key,true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.pref:
+                Intent intent = new Intent(this, MySettingsActivity.class);
+                startActivityForResult(intent, RQ_PREFERENCES);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    Darkmode
+    private void setDarkMode(){
+        if(darkmode) {
+            start_screen.setBackgroundColor(Color.GRAY);
+        }else{
+            start_screen.setBackgroundColor(Color.parseColor("#20B451"));
+        }
     }
     }
