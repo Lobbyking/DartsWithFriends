@@ -11,6 +11,8 @@ import androidx.preference.PreferenceManager;
 
 import com.example.dartswithfriends.preferences.MySettingsActivity;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     //    Preferences
@@ -28,26 +30,28 @@ public class MainActivity extends AppCompatActivity {
 
 //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-//            @Override
-//            public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
-//                MainActivity.this.preferenceChanged(sharedPrefs, key);
-//            }
-//        };
-//        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+        preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+                MainActivity.this.preferenceChanged(sharedPrefs, key);
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
     }
 
 //    Preferences
-//    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
-//        Map<String, ?> allEntries = sharedPrefs.getAll();
-//        if (allEntries.get(key) instanceof Boolean) {
-//            darkmode = sharedPrefs.getBoolean(key, true);
-//        }else if (allEntries.get(key) instanceof Boolean){
-//
-//        }else if (allEntries.get(key) instanceof Boolean){
-//
-//        }
-//    }
+    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
+        Map<String, ?> allEntries = sharedPrefs.getAll();
+        if(key.equals("darkmode")) {
+            darkmode = sharedPrefs.getBoolean(key, false);
+        }else if(key.equals("notes")){
+            notifications = sharedPrefs.getBoolean(key,true);
+        }else if(key.equals("gps")){
+            gps = sharedPrefs.getBoolean(key,true);
+        }
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,5 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+//    Darkmode
+    private static void setDarkMode(){
+
     }
 }
