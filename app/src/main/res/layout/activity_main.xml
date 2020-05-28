@@ -217,6 +217,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="#FFE21D3A"
+                android:baselineAligned="false"
                 android:text="Spiele" />
         </TableRow>
     </TableLayout>

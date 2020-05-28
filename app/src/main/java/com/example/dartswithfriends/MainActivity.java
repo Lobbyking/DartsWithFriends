@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     private Button addPlayer;
     private Button startGame;
     public ArrayList<Player> players = new ArrayList<>();
@@ -159,18 +160,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             playerNames.add(name);
             aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
             schreiben(players);
-        }else if(v.getId() == startGame.getId()){
-            if(cb501.isChecked()){
+        }else if(v.getId() == startGame.getId()) {
+            if (cb501.isChecked()) {
                 playGame(501, takenPlayers);
-            }else if(cb301.isChecked()){
+            } else if (cb301.isChecked()) {
                 playGame(301, takenPlayers);
-            }else{
+            } else {
                 Toast.makeText(this, "Du musst eine der CheckBoxes auswählen.", Toast.LENGTH_LONG).show();
             }
-
-        }else{
-
         }
+            else{
+
+            }
     }
 
     public void playGame(int points, ArrayList<Player> takenPlayers){

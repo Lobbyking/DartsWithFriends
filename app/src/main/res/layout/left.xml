@@ -58,7 +58,7 @@
             <ListView
                 android:id="@+id/Einladungen_listView"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="450dp"
                 android:layout_weight="1" />
         </TableRow>
 
