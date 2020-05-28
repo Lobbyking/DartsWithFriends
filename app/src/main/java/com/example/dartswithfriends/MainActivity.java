@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -42,11 +44,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playersListView.setAdapter(aa);
         addPlayer.setOnClickListener(this);
         startGame.setOnClickListener(this);
+        final CheckBox cb301 = findViewById(R.id.cB301_checkBox);
+        final CheckBox cb501 = findViewById(R.id.cB501_checkBox);
+
+        cb301.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    cb501.setChecked(false);
+                }
+            }
+        });
+
+        cb501.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    cb301.setChecked(false);
+                }
+            }
+        });
 
         playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String takenName = (String) (parent.getItemAtPosition(position)) + " *********";
+
+                String takenName = (String) (parent.getItemAtPosition(position));
+                if(takenName.contains("*")){
+                    //takenName = takenName.replaceAll("*********", "");
+                }
                 ArrayList<String> temp = new ArrayList<>();
                 for(int i = 0; i< playerNames.size(); i++){
                     if(i == position){
