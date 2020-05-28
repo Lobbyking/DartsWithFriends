@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +42,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playersListView.setAdapter(aa);
         addPlayer.setOnClickListener(this);
         startGame.setOnClickListener(this);
-    }
+
+        playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String takenName = (String) (parent.getItemAtPosition(position)) + " *********";
+                ArrayList<String> temp = new ArrayList<>();
+                for(int i = 0; i< playerNames.size(); i++){
+                    if(i == position){
+                        temp.add(takenName);
+                    }else{
+                        temp.add(playerNames.get(i));
+                    }
+                }
+                playerNames = new ArrayList<>();
+                playerNames = temp;
+                setView(playerNames);
+            }
+        });
+
+        }
+
 
     @Override
     public void onClick(View v) {
@@ -51,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Player p = new Player(name, 0);
             players.add(p);
             playerNames.add(name);
-            aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, playerNames);
+            aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
+            schreiben(players);
         }else if(v.getId() == startGame.getId()){
 
         }else{
@@ -90,4 +112,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-}
+
+
+    private void setView(ArrayList<String> temp) {
+        aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, temp);
+        playersListView.setAdapter(aa);
+    }
+    }
