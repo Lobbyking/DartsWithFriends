@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView playersListView;
     private ArrayList<String> playerNames = new ArrayList<>();
     private ArrayAdapter<String> aa;
+    private ArrayList<Player> TakenPlayers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +71,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String takenName = (String) (parent.getItemAtPosition(position));
-                if(takenName.contains("*")){
-                    //takenName = takenName.replaceAll("*********", "");
-                }
-                ArrayList<String> temp = new ArrayList<>();
-                for(int i = 0; i< playerNames.size(); i++){
-                    if(i == position){
-                        temp.add(takenName);
-                    }else{
-                        temp.add(playerNames.get(i));
+                if(takenName.contains("--Taken--")){
+                    takenName = takenName.replaceAll("--Taken--", "");
+                }else{
+                    takenName = takenName + "--Taken--";
+
+                    ArrayList<String> temp = new ArrayList<>();
+                    for(int i = 0; i< playerNames.size(); i++){
+                        if(i == position){
+                            temp.add(takenName);
+                        }else{
+                            temp.add(playerNames.get(i));
+                        }
                     }
+                    playerNames = new ArrayList<>();
+                    playerNames = temp;
+                    setView(playerNames);
                 }
-                playerNames = new ArrayList<>();
-                playerNames = temp;
-                setView(playerNames);
+
             }
         });
 
