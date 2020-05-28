@@ -2,9 +2,11 @@ package com.example.dartswithfriends;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
@@ -23,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean notifications;
     private boolean gps;
 
-    @Override
+
+//    Darkmode
+    TableLayout start_screen;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -37,20 +42,28 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+
+        start_screen = findViewById(R.id.start_screen);
+
+        darkmode = prefs.getBoolean("darkmode", false);
+        notifications = prefs.getBoolean("notes", true);
+        gps = prefs.getBoolean("gps", true);
+
+        setDarkMode();
     }
+
 
 //    Preferences
     private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
         Map<String, ?> allEntries = sharedPrefs.getAll();
         if(key.equals("darkmode")) {
             darkmode = sharedPrefs.getBoolean(key, false);
+            setDarkMode();
         }else if(key.equals("notes")){
             notifications = sharedPrefs.getBoolean(key,true);
         }else if(key.equals("gps")){
             gps = sharedPrefs.getBoolean(key,true);
         }
-
-
     }
 
     @Override
@@ -72,7 +85,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    Darkmode
-    private static void setDarkMode(){
-
+    private void setDarkMode(){
+        if(darkmode) {
+            start_screen.setBackgroundColor(Color.GRAY);
+        }else{
+            start_screen.setBackgroundColor(Color.parseColor("#20B451"));
+        }
     }
 }
