@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //    Darkmode
     TableLayout start_screen;
+//    TableLayout play_screen;
+//    TableLayout left_screen;
+//    TableLayout right_screen;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
 
         start_screen = findViewById(R.id.start_screen);
+//        play_screen = findViewById(R.id.play_screen);
+//        left_screen = findViewById(R.id.left_screen);
+//        right_screen = findViewById(R.id.right_screen);
 
         darkmode = prefs.getBoolean("darkmode", false);
         notifications = prefs.getBoolean("notes", true);
@@ -225,8 +232,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setDarkMode(){
         if(darkmode) {
             start_screen.setBackgroundColor(Color.GRAY);
+//            play_screen.setBackgroundColor(Color.GRAY);
+//            left_screen.setBackgroundColor(Color.GRAY);
+//            right_screen.setBackgroundColor(Color.GRAY);
         }else{
             start_screen.setBackgroundColor(Color.parseColor("#20B451"));
+//            play_screen.setBackgroundColor(Color.parseColor("#20B451"));
+//            left_screen.setBackgroundColor(Color.parseColor("#20B451"));
+//            right_screen.setBackgroundColor(Color.parseColor("#20B451"));
         }
     }
     }
