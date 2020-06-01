@@ -34,6 +34,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button switchToFriendInvites;
     private Button switchToScoreboard;
 
+    public static List<String> SMS_Invites;
+
     //    Preferences
     private SharedPreferences prefs;
     private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener;
@@ -63,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //    Darkmode
     TableLayout start_screen;
-
 
 
     @Override
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchToFriendInvites.setOnClickListener(this);
         switchToScoreboard = findViewById(R.id.midToSpiele_Button);
         switchToScoreboard.setOnClickListener(this);
-
+        SMS_Invites = new ArrayList<>();
         }
 
 
