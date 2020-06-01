@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TableLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,7 @@ public class PlayDart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dartspiel);
 
-        screen = findViewById(R.id.right_screen);
+        screen = findViewById(R.id.play_screen);
 
         //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -50,6 +51,7 @@ public class PlayDart extends AppCompatActivity {
         gps = prefs.getBoolean("gps", true);
 
         setDarkMode();
+
     }
 
     //    Preferences
