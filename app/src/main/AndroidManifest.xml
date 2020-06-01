@@ -24,7 +24,6 @@
     </activity>
         <activity android:name=".activities.Scoreboard"></activity>
         <activity android:name=".activities.PlayDart">
-            android:theme="@style/generalnotitle"
         </activity>
         <activity android:name=".activities.FriendInvites"></activity>
     </application>
