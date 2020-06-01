@@ -21,6 +21,9 @@ import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
+import com.example.dartswithfriends.activities.FriendInvites;
+import com.example.dartswithfriends.activities.PlayDart;
+import com.example.dartswithfriends.activities.Scoreboard;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Player> takenPlayers = new ArrayList<>();
     private CheckBox cb501;
     private CheckBox cb301;
+
+    private Button switchToFriendInvites;
+    private Button switchToScoreboard;
 
     //    Preferences
     private SharedPreferences prefs;
@@ -147,6 +153,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setDarkMode();
 
+        switchToFriendInvites = findViewById(R.id.midToEinladungen_Button);
+        switchToFriendInvites.setOnClickListener(this);
+        switchToScoreboard = findViewById(R.id.midToSpiele_Button);
+        switchToScoreboard.setOnClickListener(this);
+
         }
 
 
@@ -168,6 +179,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 Toast.makeText(this, "Du musst eine der CheckBoxes auswählen.", Toast.LENGTH_LONG).show();
             }
+
+            Intent intent = new Intent(this, PlayDart.class);
+            startActivity(intent);
+        }else if(v.getId() == switchToFriendInvites.getId()){
+            Intent intent = new Intent(this, FriendInvites.class);
+            startActivity(intent);
+        }else if(v.getId() == switchToScoreboard.getId()){
+            Intent intent = new Intent(this, Scoreboard.class);
+            startActivity(intent);
         }
             else{
 

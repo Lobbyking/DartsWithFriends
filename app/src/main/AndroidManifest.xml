@@ -22,6 +22,9 @@
         <category android:name="android.intent.category.LAUNCHER"/>
     </intent-filter>
     </activity>
+        <activity android:name=".activities.Scoreboard"></activity>
+        <activity android:name=".activities.PlayDart"></activity>
+        <activity android:name=".activities.FriendInvites"></activity>
     </application>
 
 </manifest>
