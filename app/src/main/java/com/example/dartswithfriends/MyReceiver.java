@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
 
 import com.example.dartswithfriends.activities.FriendInvites;
 
@@ -30,18 +29,13 @@ public class MyReceiver extends BroadcastReceiver {
                         String format = dataBundle.getString("format");
                         message[i] = SmsMessage.createFromPdu((byte[])mypdu[i],format);
                     }
-                    System.out.println("kjfds");
                     msg = message[i].getMessageBody();
                     phoneNo = message[i].getOriginatingAddress();
                 }
             }
         }
-
-//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        String text = "";
         if(msg.contains("Dart")){
-//            Toast.makeText(context, msg + "***",Toast.LENGTH_LONG).show();
-            ma.updateListView(msg);
+            MainActivity.SMS_Invites.add(msg);
         }
     }
 }

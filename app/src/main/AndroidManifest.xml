@@ -27,6 +27,11 @@
         <activity android:name=".activities.PlayDart">
         </activity>
         <activity android:name=".activities.FriendInvites"></activity>
+        <receiver android:name=".MyReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

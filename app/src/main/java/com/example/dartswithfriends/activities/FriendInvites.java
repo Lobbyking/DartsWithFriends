@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -91,8 +92,9 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,intentFilter);
         listView = findViewById(R.id.Einladungen_listView);
-        list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
+//        list = new ArrayList<>();
+//        list.addAll(MainActivity.SMS_Invites);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,MainActivity.SMS_Invites);
         listView.setAdapter(adapter);
     }
 
@@ -116,12 +118,6 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 //                doIt();
             }
         }
-    }
-
-    public  void updateListView(String text){
-        list.add(text);
-        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,list);
-        listView.setAdapter(adapter);
     }
 
     public static FriendInvites getInstance(){
@@ -175,4 +171,5 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
             screen.setBackgroundColor(Color.parseColor("#20B451"));
         }
     }
+
 }
