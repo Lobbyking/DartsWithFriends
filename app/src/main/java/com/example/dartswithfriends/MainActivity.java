@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //    Darkmode
     TableLayout start_screen;
-//    TableLayout play_screen;
-//    TableLayout left_screen;
-//    TableLayout right_screen;
+
 
 
     @Override
@@ -143,9 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
 
         start_screen = findViewById(R.id.start_screen);
-//        play_screen = findViewById(R.id.play_screen);
-//        left_screen = findViewById(R.id.left_screen);
-//        right_screen = findViewById(R.id.right_screen);
+
 
         darkmode = prefs.getBoolean("darkmode", false);
         notifications = prefs.getBoolean("notes", true);
@@ -173,15 +169,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             schreiben(players);
         }else if(v.getId() == startGame.getId()) {
             if (cb501.isChecked()) {
-                playGame(501, takenPlayers);
+                try{
+                    takenPlayers.get(0);
+                    playGame(501, takenPlayers);
+                }catch(Exception e){
+                    Toast.makeText(this, "Sie müssen einen oder mehrere Spieler auswählen", Toast.LENGTH_LONG).show();
+                }
+
             } else if (cb301.isChecked()) {
-                playGame(301, takenPlayers);
+                try{
+                    takenPlayers.get(0);
+                    playGame(301, takenPlayers);
+                }catch(Exception e){
+                    Toast.makeText(this, "Sie müssen einen oder mehrere Spieler auswählen", Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(this, "Du musst eine der CheckBoxes auswählen.", Toast.LENGTH_LONG).show();
             }
-
-            Intent intent = new Intent(this, PlayDart.class);
-            startActivity(intent);
         }else if(v.getId() == switchToFriendInvites.getId()){
             Intent intent = new Intent(this, FriendInvites.class);
             startActivity(intent);
@@ -195,7 +199,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playGame(int points, ArrayList<Player> takenPlayers){
+        Intent intent = new Intent(this, PlayDart.class);
+        startActivity(intent);
 
+        Button one = findViewById(R.id.one_Button);
     }
 
     private ArrayList<Player> einlesen(){
@@ -267,18 +274,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    //    Darkmode
+
     private void setDarkMode(){
         if(darkmode) {
             start_screen.setBackgroundColor(Color.GRAY);
-//            play_screen.setBackgroundColor(Color.GRAY);
-//            left_screen.setBackgroundColor(Color.GRAY);
-//            right_screen.setBackgroundColor(Color.GRAY);
+
         }else{
             start_screen.setBackgroundColor(Color.parseColor("#20B451"));
-//            play_screen.setBackgroundColor(Color.parseColor("#20B451"));
-//            left_screen.setBackgroundColor(Color.parseColor("#20B451"));
-//            right_screen.setBackgroundColor(Color.parseColor("#20B451"));
+
         }
     }
     }
