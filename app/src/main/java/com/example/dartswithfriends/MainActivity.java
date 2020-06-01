@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView playersListView;
     private ArrayList<String> playerNames = new ArrayList<>();
     private ArrayAdapter<String> aa;
-    private ArrayList<Player> takenPlayers = new ArrayList<>();
-    private CheckBox cb501;
-    private CheckBox cb301;
+    public static ArrayList<Player> takenPlayers = new ArrayList<>();
+    public static CheckBox cb501;
+    public static CheckBox cb301;
 
     private Button switchToFriendInvites;
     private Button switchToScoreboard;
@@ -168,10 +168,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
             schreiben(players);
         }else if(v.getId() == startGame.getId()) {
+
             if (cb501.isChecked()) {
                 try{
                     takenPlayers.get(0);
-                    playGame(501, takenPlayers);
+                    Intent intent = new Intent(this, PlayDart.class);
+                    startActivity(intent);
                 }catch(Exception e){
                     Toast.makeText(this, "Sie müssen einen oder mehrere Spieler auswählen", Toast.LENGTH_LONG).show();
                 }
@@ -179,7 +181,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else if (cb301.isChecked()) {
                 try{
                     takenPlayers.get(0);
-                    playGame(301, takenPlayers);
+                    Intent intent = new Intent(this, PlayDart.class);
+                    startActivity(intent);
+
                 }catch(Exception e){
                     Toast.makeText(this, "Sie müssen einen oder mehrere Spieler auswählen", Toast.LENGTH_LONG).show();
                 }
@@ -198,12 +202,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
     }
 
-    public void playGame(int points, ArrayList<Player> takenPlayers){
-        Intent intent = new Intent(this, PlayDart.class);
-        startActivity(intent);
-
-        Button one = findViewById(R.id.one_Button);
-    }
 
     private ArrayList<Player> einlesen(){
         ArrayList<Player> writeBack = new ArrayList<Player>();
