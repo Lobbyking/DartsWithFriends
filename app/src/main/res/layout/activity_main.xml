@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:paddingTop="40px"
                 android:text="Darts with Friends"
@@ -54,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:fontFamily="@font/roboto"
                 android:foregroundGravity="center_vertical"
                 android:paddingLeft="25px"
                 android:paddingTop="50px"
@@ -71,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="8"
+                android:fontFamily="@font/roboto"
                 android:paddingLeft="25px"
                 android:paddingTop="50px"
                 android:text="Name:"
@@ -84,6 +87,7 @@
                 android:layout_marginRight="25px"
                 android:layout_weight="3"
                 android:ems="10"
+                android:fontFamily="@font/roboto"
                 android:hint="Name"
                 android:inputType="textPersonName"
                 android:textColor="#7E111111"
@@ -100,10 +104,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25px"
                 android:layout_marginTop="30px"
-                android:layout_marginRight="120px"
+                android:layout_marginRight="25px"
                 android:background="#FFE21D3A"
-                android:paddingLeft="50px"
+                android:fontFamily="@font/roboto"
                 android:text="Hinzufügen"
+                android:textAlignment="center"
                 android:textColor="#FF111111" />
         </TableRow>
 
@@ -115,6 +120,7 @@
                 android:id="@+id/einstellungen_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingLeft="25px"
                 android:paddingTop="50px"
                 android:text="Spiel Einstellungen:"
@@ -131,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="301"
                 android:textColor="#FF111111"
@@ -141,6 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="501"
                 android:textColor="#FF111111"
@@ -156,6 +164,7 @@
                 android:id="@+id/choosePlayer_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingLeft="25px"
                 android:paddingTop="30px"
                 android:text="Spieler auswählen:"
@@ -189,6 +198,7 @@
                 android:layout_marginRight="25px"
                 android:layout_weight="1"
                 android:background="#FFE21D3A"
+                android:fontFamily="@font/roboto"
                 android:paddingRight="25px"
                 android:text="Start"
                 android:textColor="#FF111111" />
@@ -203,10 +213,11 @@
                 android:id="@+id/midToEinladungen_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="70dp"
                 android:layout_weight="1"
                 android:background="#FFE21D3A"
+                android:fontFamily="@font/roboto"
                 android:text="Einladungen" />
 
             <Button
@@ -214,11 +225,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#FFE21D3A"
                 android:baselineAligned="false"
+                android:fontFamily="@font/roboto"
                 android:text="Spiele" />
+
         </TableRow>
     </TableLayout>
 

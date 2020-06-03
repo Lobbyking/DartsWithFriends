@@ -53,16 +53,21 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 //PLAYER 1
                 ((TextView) listItem.findViewById(R.id.scoreboard_Player1_txtView)).setText(x.name);
                 int av = match.game.get(x);
-                ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText(av);
+                String avs = String.valueOf(av);
+                ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText("Avg.: "+avs);
                 //PLAYER 2
-                ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText("");
-                ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText("");
+                ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText(" ");
+                ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(" ");
                 //PLAYER 3
-                ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText("");
-                ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText("");
+                ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(" ");
+                ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(" ");
                 //PLAYER 4
-                ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText("");
-                ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText("");
+                ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
+                ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
+                //Bindestriche
+                ((TextView) listItem.findViewById(R.id.bind1)).setText(" ");
+                ((TextView) listItem.findViewById(R.id.bind2)).setText(" ");
+                ((TextView) listItem.findViewById(R.id.bind3)).setText(" ");
             }
         }
 
@@ -74,26 +79,37 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 if(counter==0) {
                     ((TextView) listItem.findViewById(R.id.scoreboard_Player1_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 2
                 if(counter==1) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 3
                 if(counter==2) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText("");
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText("");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(" ");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(" ");
                 }
                 //PLAYER 4
                 if(counter==3) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText("");
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText("");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
                 }
+
                 ++counter;
             }
+            //Bindestriche
+            ((TextView) listItem.findViewById(R.id.bind2)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.bind3)).setText(" ");
+            //Numoi andere Player
+            ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(" ");
         }
 
         else if(match.game.size()==3)
@@ -104,27 +120,35 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 if(counter==0) {
                     ((TextView) listItem.findViewById(R.id.scoreboard_Player1_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 2
                 if(counter==1) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 3
                 if(counter==2) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 4
                 if(counter==3) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText("");
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText("");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
                 }
                 ++counter;
             }
+            //Bindestriche
+            ((TextView) listItem.findViewById(R.id.bind3)).setText(" ");
+            //Numoi andere Player
+            ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
         }
 
         else if(match.game.size()==4)
@@ -135,25 +159,29 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 if(counter==0) {
                     ((TextView) listItem.findViewById(R.id.scoreboard_Player1_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP1_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 2
                 if(counter==1) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player2_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP2_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 3
                 if(counter==2) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText("Avg.: "+avs);
                 }
                 //PLAYER 4
                 if(counter==3) {
-                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(x.name);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(x.name);
                     int av = match.game.get(x);
-                    ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(av);
+                    String avs = String.valueOf(av);
+                    ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText("Avg.: "+avs);
                 }
                 ++counter;
             }
