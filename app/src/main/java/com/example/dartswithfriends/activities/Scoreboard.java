@@ -57,8 +57,6 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
     private ListView scoreboard;
     private ScoreBoardLvAdapter lvAdapter;
 
-    public static List<String> SMS_Invites;
-
     public static Scoreboard instance;
 
     @Override
@@ -67,7 +65,6 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.right);
 
         instance = this;
-        SMS_Invites = new ArrayList<>();
         switchToMid = findViewById(R.id.rightBackToMid_Button);
         switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.right_screen);
@@ -161,8 +158,8 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    public ArrayList<Player> readScores(){
-        ArrayList<Player> list = new ArrayList<>();
+    public ArrayList<Match> readScores(){
+        ArrayList<Match> list = new ArrayList<>();
 
         String state = Environment.getExternalStorageState();
         if (! state . equals(Environment.MEDIA_MOUNTED)) ;
@@ -176,10 +173,27 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             String line = br.readLine();
 
             while(line != null || !line.equals("")){
+                HashMap<Player, Integer> game = new HashMap<>();
+                Double lon = 0.0;
+                Double lat = 0.0;
+
                 String[] arr = line.split(";");
-                Player p = new Player(arr[0],Integer.valueOf(arr[2]));
-                p.setAverage(Integer.valueOf(arr[1]));
-                list.add(p);
+
+                for(int i = 0; i < arr.length; ++i){
+                    if (arr[i].matches(".*[a-z].*")) {
+                        Player p = new Player(arr[i],Integer.valueOf(arr[i+1]));
+                        p.setAverage(Double.valueOf(arr[i+2]));
+                        Integer score = Integer.valueOf(arr[i+4]);
+                        game.put(p,score);
+                    }else if(i+1 == arr.length){
+                        lat = Double.valueOf(arr[i]);
+                    }else{
+                        lon = Double.valueOf(arr[i]);
+                    }
+                }
+
+                list.add(new Match(game,lon,lat));
+
                 line = br.readLine();
             }
         } catch (Exception e) {
@@ -188,7 +202,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         return list;
     }
 
-    public void writeScores(List<String> list) {
+    public void writeScores(List<Match> list) {
         if(list == null){
             return;
         }
@@ -202,7 +216,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
                     new OutputStreamWriter(
                             new FileOutputStream(fullPath)));
             for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i)+"\n");
+                out.append(list.get(i).toString()+"\n");
             }
             out.flush();
             out.close();

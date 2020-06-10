@@ -30,4 +30,16 @@ public class Match {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
+
+    public String toString(){
+        String print = "";
+
+        for(Player p : game.keySet()){
+            print += p.toString() + ";" + game.get(p) +";";
+        }
+
+        print += longitude + ";" + latitude;
+
+        return print;
+    }
 }
