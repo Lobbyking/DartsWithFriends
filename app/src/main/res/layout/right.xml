@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
 
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:paddingTop="40px"
                 android:text="Darts with Friends"
@@ -74,6 +75,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="170dp"
                 android:background="#FFE21D3A"
+                android:fontFamily="@font/roboto"
                 android:text="Start" />
         </TableRow>
 

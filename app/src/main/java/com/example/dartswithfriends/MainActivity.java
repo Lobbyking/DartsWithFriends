@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             playerNames.add(name);
             aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
             schreiben(players);
+            playerName.setText("");
         }else if(v.getId() == startGame.getId()) {
 
             if (cb501.isChecked()) {

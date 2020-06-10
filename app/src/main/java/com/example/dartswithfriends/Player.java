@@ -19,7 +19,7 @@ public class Player {
         this.average = average;
     }
 
-    public double getAvereage(){
+    public double getAverage(){
         return average;
     }
 

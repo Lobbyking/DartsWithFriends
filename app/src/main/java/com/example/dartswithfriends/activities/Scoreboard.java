@@ -1,23 +1,37 @@
 package com.example.dartswithfriends.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TableLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.example.dartswithfriends.LocationAsyncTask;
 import com.example.dartswithfriends.MainActivity;
+import com.example.dartswithfriends.Match;
+import com.example.dartswithfriends.Player;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
+import com.example.dartswithfriends.ScoreBoardLvAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class Scoreboard extends AppCompatActivity implements View.OnClickListener{
@@ -32,6 +46,10 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
     private boolean darkmode;
     private boolean notifications;
     private boolean gps;
+    private List<Match> matches = new ArrayList<>();
+    private ListView scoreboard;
+    private ScoreBoardLvAdapter lvAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +59,8 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         switchToMid = findViewById(R.id.rightBackToMid_Button);
         switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.right_screen);
+        scoreboard = findViewById(R.id.Spiele_listView);
+
 
         //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -57,6 +77,23 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         gps = prefs.getBoolean("gps", true);
 
         setDarkMode();
+
+        lvAdapter = new ScoreBoardLvAdapter(this, R.layout.listview_layout_scoreboard, matches);
+        scoreboard.setAdapter(lvAdapter);
+
+        scoreboard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                Double longitude = matches.get(pos).getLongitude();
+                Double latitude = matches.get(pos).getLatitude();
+                String poss="geo:"+longitude+","+latitude+"?z=15";
+                Uri uri = Uri.parse(poss);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -106,4 +143,5 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             screen.setBackgroundColor(Color.parseColor("#20B451"));
         }
     }
+
 }
