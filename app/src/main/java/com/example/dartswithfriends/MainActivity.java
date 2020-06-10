@@ -158,6 +158,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchToScoreboard = findViewById(R.id.midToSpiele_Button);
         switchToScoreboard.setOnClickListener(this);
         SMS_Invites = new ArrayList<>();
+
+        players = einlesen();
+        for(int i  = 0; i<players.size(); i++){
+            playerNames.add(players.get(i).getName());
+        }
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerNames);
+        playersListView.setAdapter(aa);
         }
 
 

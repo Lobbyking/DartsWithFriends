@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,6 +40,11 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
     private boolean darkmode;
     private boolean notifications;
     private boolean gps;
+
+    int playerTurn = 0;
+    int dartsAvailable = 3;
+    public ArrayList<Integer> punktestand = new ArrayList<>();
+    TextView points;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -68,16 +74,19 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         gps = prefs.getBoolean("gps", true);
        // @SuppressLint("WrongViewCast") EditText et = findViewById(R.id.score_TextView);
         setDarkMode();
+
+        points = findViewById(R.id.score_TextView);
+
         if(MainActivity.cb301.isChecked()){
             //et.setText("301");
-            TextView points = findViewById(R.id.score_TextView);
+
             points.setText("301");
-            playGame(301, MainActivity.takenPlayers);
+            startGame(301, MainActivity.takenPlayers);
         }else if(MainActivity.cb501.isChecked()){
            // et.setText("501");
-            TextView points = findViewById(R.id.score_TextView);
+
             points.setText("501");
-            playGame(501, MainActivity.takenPlayers);
+            startGame(501, MainActivity.takenPlayers);
         }
         Button one = findViewById(R.id.one_Button);
         one.setOnClickListener(this);
@@ -127,7 +136,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         showPoints.setOnClickListener(this);
         Button undo = findViewById(R.id.undo_Button);
         undo.setOnClickListener(this);
-        //playGame();
+
 
     }
 
@@ -171,43 +180,81 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         }
     }
 
-    public void playGame(int points, ArrayList<Player> takenPlayers){
-        ArrayList<Integer> punktestand = new ArrayList<>();
+    public void startGame(int points, ArrayList<Player> takenPlayers){
 
         for(int i = 0; i<takenPlayers.size(); i++){
             punktestand.add(points);
         }
-        //for(int i = 0; i<takenPlayers.size(); i++){
 
-            //for(int j = 0; j<3; j++){
-
-
-            //}
-        //}
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.one_Button || v.getId() == R.id.two_Button || v.getId() == R.id.three_Button || v.getId() == R.id.four_Button || v.getId() == R.id.five_Button|| v.getId() == R.id.six_Button || v.getId() == R.id.seven_Button || v.getId() == R.id.eight_Button || v.getId() == R.id.nine_Button || v.getId() == R.id.ten_Button || v.getId() == R.id.eleven_Button || v.getId() == R.id.twelve_Button || v.getId() == R.id.thirteen_Button || v.getId() == R.id.fourteen_Button || v.getId() == R.id.fifteen_Button || v.getId() == R.id.sixteen_Button || v.getId() == R.id.seven_Button || v.getId() == R.id.eighteen_Button || v.getId() == R.id.nineteen_Button || v.getId() == R.id.twenty_Button){
            Button pushed = (Button) v;
-           String number = pushed.getText().toString();
+           final String number = pushed.getText().toString();
             AlertDialog.Builder ad = new AlertDialog.Builder(this).setTitle("Auswählen:")
                     .setNegativeButton("D"+number, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which){
+                            int punkte = punktestand.get(playerTurn);
+                            if(punkte +1 > Integer.parseInt(number)*2){
+                                punkte = punkte - Integer.parseInt(number)*2;
+                                points.setText(String.valueOf(punkte));
+                                dartsAvailable--;
+                                punktestand.set(playerTurn, punkte);
+                                if(dartsAvailable == 0){
+                                    playerTurn++;
+                                    dartsAvailable = 3;
+                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                                }else{
 
+                                }
+                            }else{
+                                Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     })
                     .setNeutralButton(number, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which){
+                            int punkte = punktestand.get(playerTurn);
+                            if(punkte +1 > Integer.parseInt(number)){
+                                punkte = punkte - Integer.parseInt(number);
+                                points.setText(String.valueOf(punkte));
+                                punktestand.set(playerTurn, punkte);
+                                dartsAvailable--;
+                                if(dartsAvailable == 0){
+                                    playerTurn++;
+                                    dartsAvailable = 3;
+                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                                }else{
 
+                                }
+                            }else{
+                                Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     })
                     .setPositiveButton("T"+number, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which){
+                            int punkte = punktestand.get(playerTurn);
+                            if(punkte +1 > Integer.parseInt(number)*3){
+                                punkte = punkte - Integer.parseInt(number)*3;
+                                points.setText(String.valueOf(punkte));
+                                dartsAvailable--;
+                                punktestand.set(playerTurn, punkte);
+                                if(dartsAvailable == 0){
+                                    playerTurn++;
+                                    dartsAvailable = 3;
+                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                                }else{
 
+                                }
+                            }else{
+                                Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
             ad.show();
