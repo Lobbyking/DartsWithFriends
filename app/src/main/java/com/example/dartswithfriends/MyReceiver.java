@@ -5,17 +5,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.telephony.SmsMessage;
 
 import com.example.dartswithfriends.activities.FriendInvites;
+import com.example.dartswithfriends.activities.Scoreboard;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    FriendInvites ma = FriendInvites.getInstance();
+    FriendInvites fi = FriendInvites.getInstance();
+    MainActivity ma = MainActivity.getInstance();
+    Scoreboard sb = Scoreboard.getInstance();
     String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     String Tag = "SmsBroadcastReceiver";
     String msg = "";
     String phoneNo= "";
+
+    List<String> arr = new ArrayList<>();
 
     @Override
     public void onReceive(Context context, Intent intent ) {
@@ -35,7 +49,33 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
         if(msg.contains("Dart")){
-            MainActivity.SMS_Invites.add(msg);
+            arr.add(msg);
+            fi.list.add(msg);
+            fi.updateListView();
+            writeSMSinvites(arr);
         }
     }
+
+    public void writeSMSinvites(List<String> list) {
+        if(list == null){
+            return;
+        }
+        String state = Environment.getExternalStorageState();
+        if (! state . equals(Environment.MEDIA_MOUNTED)) return;
+        File outFile = fi.getExternalFilesDir(null);
+        String path = outFile.getAbsolutePath();
+        String fullPath = path + File. separator + "SMS.txt";
+        try {
+            PrintWriter out = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(new File(fullPath),true)));
+            for(int i = 0; i < list.size(); ++i){
+                out.append(list.get(i)+"\n");
+            }
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+        }
+    }
+
 }

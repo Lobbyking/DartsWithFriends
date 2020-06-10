@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +26,22 @@ import com.example.dartswithfriends.MainActivity;
 import com.example.dartswithfriends.MyReceiver;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
+import com.example.dartswithfriends.SDCard_Save;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class FriendInvites extends AppCompatActivity implements View.OnClickListener{
 
+    private static final int RQ_READ = 84232;
+    private static final int RQ_WRITE = 532;
     private Button switchToMid;
     private TableLayout screen;
 
@@ -47,7 +57,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     private static final int RQ_RECEIVESMS = 12343;
     private static FriendInvites instance;
     ListView listView;
-    List list;
+    public static List list;
     ArrayAdapter<String> adapter;
 
     @Override
@@ -58,6 +68,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         switchToMid = findViewById(R.id.leftBackToMid_Button);
         switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.left_screen);
+        list = new ArrayList<>();
 
         //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -88,13 +99,17 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         } else {
 //            doIt();
         }
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},RQ_READ);
+        } else {
+            list = readSMS();
+        }
         MyReceiver myReceiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,intentFilter);
         listView = findViewById(R.id.Einladungen_listView);
-//        list = new ArrayList<>();
-//        list.addAll(MainActivity.SMS_Invites);
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,MainActivity.SMS_Invites);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
         listView.setAdapter(adapter);
     }
 
@@ -118,6 +133,20 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 //                doIt();
             }
         }
+        if (requestCode==RQ_READ) {
+            if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
+                //user does not allow
+            } else {
+                list = readSMS();
+            }
+        }
+        if (requestCode==RQ_WRITE) {
+            if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
+                //user does not allow
+            } else {
+                writeSMSinvites(list);
+            }
+        }
     }
 
     public static FriendInvites getInstance(){
@@ -127,9 +156,15 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == switchToMid.getId()) {
+            writeSMSinvites(list);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void updateListView(){
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
+        listView.setAdapter(adapter);
     }
 
     //    Preferences
@@ -172,4 +207,50 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    public void writeSMSinvites(List<String> list) {
+        if(list == null){
+            return;
+        }
+        String state = Environment.getExternalStorageState();
+        if (! state . equals(Environment.MEDIA_MOUNTED)) return;
+        File outFile = getExternalFilesDir(null);
+        String path = outFile.getAbsolutePath();
+        String fullPath = path + File. separator + "SMS.txt";
+        try {
+            PrintWriter out = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(new File(fullPath))));
+            for(int i = 0; i < list.size(); ++i){
+                out.append(list.get(i)+"\n");
+            }
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public ArrayList<String> readSMS(){
+        ArrayList<String> list = new ArrayList<>();
+
+        String state = Environment.getExternalStorageState();
+        if (! state . equals(Environment.MEDIA_MOUNTED)) ;
+        File outFile = getExternalFilesDir(null);
+        String path = outFile.getAbsolutePath();
+        String fullPath = path + File. separator + "SMS.txt";
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File(fullPath)));
+
+            String line = br.readLine();
+
+            while(line != null || !line.equals("")){
+                list.add(line);
+                line = br.readLine();
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
+    }
 }
+
