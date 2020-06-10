@@ -1,6 +1,7 @@
 package com.example.dartswithfriends.activities;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -11,9 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -22,11 +26,13 @@ import android.widget.TableLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.dartswithfriends.FriendInvitesLvAdapter;
 import com.example.dartswithfriends.MainActivity;
 import com.example.dartswithfriends.MyReceiver;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
 import com.example.dartswithfriends.SDCard_Save;
+import com.example.dartswithfriends.SMS;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +48,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 
     private static final int RQ_READ = 84232;
     private static final int RQ_WRITE = 532;
+    private static final int RQ_SENDSMS = 6363;
     private Button switchToMid;
     private TableLayout screen;
 
@@ -57,8 +64,11 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     private static final int RQ_RECEIVESMS = 12343;
     private static FriendInvites instance;
     ListView listView;
-    public static List list;
-    ArrayAdapter<String> adapter;
+    public static List<SMS> SMS_invites;
+    FriendInvitesLvAdapter adapter;
+
+    boolean accept = false;
+    MenuItem current = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +78,8 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         switchToMid = findViewById(R.id.leftBackToMid_Button);
         switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.left_screen);
-        list = new ArrayList<>();
+
+        SMS_invites = new ArrayList<>();
 
         //        Preferences
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -103,14 +114,88 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},RQ_READ);
         } else {
-            list = readSMS();
+            SMS_invites = readSMS();
         }
         MyReceiver myReceiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,intentFilter);
         listView = findViewById(R.id.Einladungen_listView);
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
+        adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
         listView.setAdapter(adapter);
+        registerForContextMenu(listView);
+    }
+
+//    Context Menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    int viewId = v.getId();
+    if (viewId == R.id.Einladungen_listView) {
+        getMenuInflater().inflate(R.menu.friend_invites_menu, menu);
+    }
+    super.onCreateContextMenu(menu, v, menuInfo);
+}
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.accept) {
+            if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_SMS},RQ_SENDSMS);
+            } else {
+                accept = true;
+                current = item;
+                sendSMS(accept, current);
+            }
+            return true;
+        }
+        if (item.getItemId() == R.id.deny) {
+            if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_SMS},RQ_SENDSMS);
+            } else {
+                accept = false;
+                current = item;
+                sendSMS(accept, current);
+            }
+
+            return true;
+        }
+        if (item.getItemId() == R.id.delete) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            String s = "";
+            if (info != null) {
+                long id = info.id;
+                int pos = info.position;
+                s = info != null ?
+                        listView.getAdapter().getItem(pos).toString() :
+                        "";
+            }
+
+            SMS sms = findSMS(s);
+
+            SMS_invites.remove(sms);
+
+            adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
+            listView.setAdapter(adapter);
+            writeSMSinvites(SMS_invites);
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private SMS findSMS(String s){
+        String[]arr = s.split(";");
+        String msg = arr[0];
+        String number = arr[1];
+
+        for(int i = 0; i < SMS_invites.size(); ++i){
+            if(SMS_invites.get(i).getMsg().equals(msg)){
+                if(SMS_invites.get(i).getNumber().equals(number)){
+                    return SMS_invites.get(i);
+                }
+            }
+        }
+        return null;
     }
 
 //    Permissions
@@ -137,14 +222,20 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
             if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
                 //user does not allow
             } else {
-                list = readSMS();
+                SMS_invites = readSMS();
             }
         }
         if (requestCode==RQ_WRITE) {
             if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
                 //user does not allow
             } else {
-                writeSMSinvites(list);
+                writeSMSinvites(SMS_invites);
+            }
+        }if (requestCode==RQ_SENDSMS) {
+            if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
+                //user does not allow
+            } else {
+                sendSMS(accept, current);
             }
         }
     }
@@ -156,14 +247,14 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == switchToMid.getId()) {
-            writeSMSinvites(list);
+            writeSMSinvites(SMS_invites);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }
 
     public void updateListView(){
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,list);
+        adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
         listView.setAdapter(adapter);
     }
 
@@ -207,7 +298,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void writeSMSinvites(List<String> list) {
+    public void writeSMSinvites(List<SMS> list) {
         if(list == null){
             return;
         }
@@ -221,7 +312,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
                     new OutputStreamWriter(
                             new FileOutputStream(new File(fullPath))));
             for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i)+"\n");
+                out.append(list.get(i).toString()+"\n");
             }
             out.flush();
             out.close();
@@ -229,8 +320,8 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public ArrayList<String> readSMS(){
-        ArrayList<String> list = new ArrayList<>();
+    public ArrayList<SMS> readSMS(){
+        ArrayList<SMS> list = new ArrayList<>();
 
         String state = Environment.getExternalStorageState();
         if (! state . equals(Environment.MEDIA_MOUNTED)) ;
@@ -244,13 +335,70 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
             String line = br.readLine();
 
             while(line != null || !line.equals("")){
-                list.add(line);
+                String[] arr = line.split(";");
+                list.add(new SMS(arr[0],arr[1]));
                 line = br.readLine();
             }
         } catch (Exception e) {
         }
 
         return list;
+    }
+
+    private void sendSMS(boolean b, MenuItem item){
+        if(b){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            String s = "";
+            if (info != null) {
+                long id = info.id;
+                int pos = info.position;
+                s = info != null ?
+                        listView.getAdapter().getItem(pos).toString() :
+                        "";
+            }
+
+            SMS sms = findSMS(s);
+
+            String number = sms.getNumber();
+            String msg = "Ja gerne, lass uns treffen!";
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, SMS.class), 0);
+
+            SmsManager SMSmanager = SmsManager.getDefault();
+            SMSmanager.sendTextMessage(number, null, msg, pi, null);
+
+            SMS_invites.remove(sms);
+
+            adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
+            listView.setAdapter(adapter);
+            writeSMSinvites(SMS_invites);
+        }else{
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            String s = "";
+            if (info != null) {
+                long id = info.id;
+                int pos = info.position;
+                s = info != null ?
+                        listView.getAdapter().getItem(pos).toString() :
+                        "";
+            }
+
+            SMS sms = findSMS(s);
+
+            String number = sms.getNumber();
+            String msg = "Vielleicht ein anderes mal.";
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, SMS.class), 0);
+
+            SmsManager SMSmanager = SmsManager.getDefault();
+            SMSmanager.sendTextMessage(number, null, msg, pi, null);
+
+            SMS_invites.remove(sms);
+
+            adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
+            listView.setAdapter(adapter);
+            writeSMSinvites(SMS_invites);
+        }
     }
 }
 

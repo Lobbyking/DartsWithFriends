@@ -22,14 +22,12 @@ import java.util.List;
 public class MyReceiver extends BroadcastReceiver {
 
     FriendInvites fi = FriendInvites.getInstance();
-    MainActivity ma = MainActivity.getInstance();
-    Scoreboard sb = Scoreboard.getInstance();
     String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     String Tag = "SmsBroadcastReceiver";
     String msg = "";
     String phoneNo= "";
 
-    List<String> arr = new ArrayList<>();
+    List<SMS> arr = new ArrayList<>();
 
     @Override
     public void onReceive(Context context, Intent intent ) {
@@ -49,14 +47,14 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
         if(msg.contains("Dart")){
-            arr.add(msg);
-            fi.list.add(msg);
+            arr.add(new SMS(msg,phoneNo));
+            fi.SMS_invites.add(new SMS(msg,phoneNo));
             fi.updateListView();
             writeSMSinvites(arr);
         }
     }
 
-    public void writeSMSinvites(List<String> list) {
+    public void writeSMSinvites(List<SMS> list) {
         if(list == null){
             return;
         }
@@ -70,7 +68,7 @@ public class MyReceiver extends BroadcastReceiver {
                     new OutputStreamWriter(
                             new FileOutputStream(new File(fullPath),true)));
             for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i)+"\n");
+                out.append(list.get(i).toString()+"\n");
             }
             out.flush();
             out.close();
