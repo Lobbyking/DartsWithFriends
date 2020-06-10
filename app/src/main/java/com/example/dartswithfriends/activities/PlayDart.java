@@ -45,6 +45,8 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
     int dartsAvailable = 3;
     public ArrayList<Integer> punktestand = new ArrayList<>();
     TextView points;
+    TextView playerTextView;
+    private ArrayList<Double> gameAverage;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -76,15 +78,17 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         setDarkMode();
 
         points = findViewById(R.id.score_TextView);
-
+        playerTextView = findViewById(R.id.player_TextView);
         if(MainActivity.cb301.isChecked()){
             //et.setText("301");
-
+            String name = MainActivity.takenPlayers.get(0).getName();
+            playerTextView.setText(name);
             points.setText("301");
             startGame(301, MainActivity.takenPlayers);
         }else if(MainActivity.cb501.isChecked()){
            // et.setText("501");
-
+            String name = MainActivity.takenPlayers.get(0).getName();
+            playerTextView.setText(name);
             points.setText("501");
             startGame(501, MainActivity.takenPlayers);
         }
@@ -190,7 +194,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.one_Button || v.getId() == R.id.two_Button || v.getId() == R.id.three_Button || v.getId() == R.id.four_Button || v.getId() == R.id.five_Button|| v.getId() == R.id.six_Button || v.getId() == R.id.seven_Button || v.getId() == R.id.eight_Button || v.getId() == R.id.nine_Button || v.getId() == R.id.ten_Button || v.getId() == R.id.eleven_Button || v.getId() == R.id.twelve_Button || v.getId() == R.id.thirteen_Button || v.getId() == R.id.fourteen_Button || v.getId() == R.id.fifteen_Button || v.getId() == R.id.sixteen_Button || v.getId() == R.id.seven_Button || v.getId() == R.id.eighteen_Button || v.getId() == R.id.nineteen_Button || v.getId() == R.id.twenty_Button){
+        if(v.getId() == R.id.one_Button || v.getId() == R.id.two_Button || v.getId() == R.id.three_Button || v.getId() == R.id.four_Button || v.getId() == R.id.five_Button|| v.getId() == R.id.six_Button || v.getId() == R.id.seven_Button || v.getId() == R.id.eight_Button || v.getId() == R.id.nine_Button || v.getId() == R.id.ten_Button || v.getId() == R.id.eleven_Button || v.getId() == R.id.twelve_Button || v.getId() == R.id.thirteen_Button || v.getId() == R.id.fourteen_Button || v.getId() == R.id.fifteen_Button || v.getId() == R.id.sixteen_Button || v.getId() == R.id.seventeen_Button || v.getId() == R.id.eighteen_Button || v.getId() == R.id.nineteen_Button || v.getId() == R.id.twenty_Button){
            Button pushed = (Button) v;
            final String number = pushed.getText().toString();
             AlertDialog.Builder ad = new AlertDialog.Builder(this).setTitle("Auswählen:")
@@ -199,20 +203,43 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                         public void onClick(DialogInterface dialog, int which){
                             int punkte = punktestand.get(playerTurn);
                             if(punkte +1 > Integer.parseInt(number)*2){
-                                punkte = punkte - Integer.parseInt(number)*2;
-                                points.setText(String.valueOf(punkte));
-                                dartsAvailable--;
-                                punktestand.set(playerTurn, punkte);
-                                if(dartsAvailable == 0){
-                                    playerTurn++;
-                                    dartsAvailable = 3;
-                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
-                                }else{
+                                if(punkte-Integer.parseInt(number)*2 == 1 ||punkte-Integer.parseInt(number)*2 < 0 ){
+                                    Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist dran!", Toast.LENGTH_LONG).show();
 
+                                }else {
+                                    punkte = punkte - Integer.parseInt(number) * 2;
+                                    points.setText(String.valueOf(punkte));
+                                    punktestand.set(playerTurn, punkte);
+                                    dartsAvailable--;
+                                    if (punkte == 0) {
+                                        Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
+                                        return;
+                                    }
+
+                                    if (dartsAvailable == 0) {
+                                        playerTurn++;
+                                        if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                            playerTurn = 0;
+                                        }
+                                        dartsAvailable = 3;
+                                        playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                        points.setText(punktestand.get(playerTurn).toString());
+                                        Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+
+                                    } else {
+
+                                    }
                                 }
                             }else{
                                 Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
-                            }
+                                playerTurn++;
+                                if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                    playerTurn = 0;
+                                }
+                                dartsAvailable = 3;
+                                playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                points.setText(punktestand.get(playerTurn).toString());
+                           }
                         }
                     })
                     .setNeutralButton(number, new DialogInterface.OnClickListener(){
@@ -220,18 +247,42 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                         public void onClick(DialogInterface dialog, int which){
                             int punkte = punktestand.get(playerTurn);
                             if(punkte +1 > Integer.parseInt(number)){
-                                punkte = punkte - Integer.parseInt(number);
-                                points.setText(String.valueOf(punkte));
-                                punktestand.set(playerTurn, punkte);
-                                dartsAvailable--;
-                                if(dartsAvailable == 0){
+                                if((punkte - Integer.parseInt(number)) < 2){
+                                    Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist dran!", Toast.LENGTH_LONG).show();
                                     playerTurn++;
+                                    if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                        playerTurn = 0;
+                                    }
                                     dartsAvailable = 3;
-                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
-                                }else{
+                                    playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                    points.setText(punktestand.get(playerTurn).toString());
+                                }else {
+                                    punkte = punkte - Integer.parseInt(number);
+                                    points.setText(String.valueOf(punkte));
+                                    punktestand.set(playerTurn, punkte);
+                                    dartsAvailable--;
 
+                                    if (dartsAvailable == 0) {
+                                        playerTurn++;
+                                        if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                            playerTurn = 0;
+                                        }
+                                        dartsAvailable = 3;
+                                        Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                                        playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                        points.setText(punktestand.get(playerTurn).toString());
+                                    } else {
+
+                                    }
                                 }
                             }else{
+                                playerTurn++;
+                                if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                    playerTurn = 0;
+                                }
+                                dartsAvailable = 3;
+                                playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                points.setText(punktestand.get(playerTurn).toString());
                                 Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -241,19 +292,43 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                         public void onClick(DialogInterface dialog, int which){
                             int punkte = punktestand.get(playerTurn);
                             if(punkte +1 > Integer.parseInt(number)*3){
-                                punkte = punkte - Integer.parseInt(number)*3;
-                                points.setText(String.valueOf(punkte));
-                                dartsAvailable--;
-                                punktestand.set(playerTurn, punkte);
-                                if(dartsAvailable == 0){
+                                if((punkte - Integer.parseInt(number)*3) < 2){
+                                    Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist dran!", Toast.LENGTH_LONG).show();
                                     playerTurn++;
+                                    if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                        playerTurn = 0;
+                                    }
                                     dartsAvailable = 3;
-                                    Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
-                                }else{
+                                    playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                    points.setText(punktestand.get(playerTurn).toString());
+                                }else {
+                                    punkte = punkte - Integer.parseInt(number) * 3;
+                                    points.setText(String.valueOf(punkte));
+                                    punktestand.set(playerTurn, punkte);
+                                    dartsAvailable--;
 
+                                    if (dartsAvailable == 0) {
+                                        playerTurn++;
+                                        if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                            playerTurn = 0;
+                                        }
+                                        dartsAvailable = 3;
+                                        Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                                        playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName().toString());
+                                        points.setText(punktestand.get(playerTurn).toString());
+                                    } else {
+
+                                    }
                                 }
                             }else{
                                 Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
+                                playerTurn++;
+                                if (playerTurn >= MainActivity.takenPlayers.size()) {
+                                    playerTurn = 0;
+                                }
+                                dartsAvailable = 3;
+                                playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName());
+                                points.setText(punktestand.get(playerTurn).toString());
                             }
                         }
                     });
@@ -261,17 +336,35 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         }else if(v.getId() == R.id.undo_Button){
 
         }else if(v.getId() == R.id.bull_Button){
-            AlertDialog.Builder ad = new AlertDialog.Builder(this).setPositiveButton("Single Bull", new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialog, int which){
-
-                }
-            }).setNegativeButton("Double Bull", new DialogInterface.OnClickListener() {
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setButton("Single Bull", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    int punkte = punktestand.get(playerTurn);
+                    if(punkte > 26){
+                        punkte = punkte - 25;
+                        points.setText(String.valueOf(punkte));
+                        punktestand.set(playerTurn, punkte);
+                        dartsAvailable--;
 
+                        if(dartsAvailable == 0){
+                            playerTurn++;
+                            if(playerTurn >=MainActivity.takenPlayers.size()){
+                                playerTurn = 0;
+                            }
+                            dartsAvailable = 3;
+                            Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
+                            playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName().toString());
+                            points.setText(punktestand.get(playerTurn).toString());
+                        }else{
+
+                        }
+                    }else{
+                        Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
+
             ad.show();
         }else if(v.getId() == R.id.null_Button){
 
