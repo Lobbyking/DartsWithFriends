@@ -2,26 +2,47 @@ package com.example.dartswithfriends.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.dartswithfriends.R;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class endScreen extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
     public static TextView player1;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player1_avg;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player1_points;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player2;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player2_avg;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player2_points;
+    @SuppressLint("StaticFieldLeak")
     public static TextView winner;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player3;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player3_avg;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player3_points;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player4;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player4_avg;
+    @SuppressLint("StaticFieldLeak")
     public static TextView player4_points;
+
+   /* public endScreen(ArrayList<Integer> averages, ArrayList<Integer> points, ArrayList<String> names){
+
+    } */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

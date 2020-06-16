@@ -46,11 +46,12 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
     public ArrayList<Integer> punktestand = new ArrayList<>();
     TextView points;
     TextView playerTextView;
-    private ArrayList<Double> gameAverage;
+    private ArrayList<Double> gameAverage = new ArrayList<>();
     private TextView thrownAmount;
     private ArrayList<Double> averages = new ArrayList<>();
+    private ArrayList<Integer> lastDarts = new ArrayList<>();
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint({"SourceLockedOrientationActivity", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +102,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         two.setOnClickListener(this);
         Button three = findViewById(R.id.three_Button);
         three.setOnClickListener(this);
-        Button four = findViewById(R.id.four_Button);
+        @SuppressLint("CutPasteId") Button four = findViewById(R.id.four_Button);
         four.setOnClickListener(this);
         Button five = findViewById(R.id.five_Button);
         five.setOnClickListener(this);
@@ -121,7 +122,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         twelve.setOnClickListener(this);
         Button thirteen = findViewById(R.id.thirteen_Button);
         thirteen.setOnClickListener(this);
-        Button fourteen = findViewById(R.id.four_Button);
+        Button fourteen = findViewById(R.id.fourteen_Button);
         fourteen.setOnClickListener(this);
         Button fifteen = findViewById(R.id.fifteen_Button);
         fifteen.setOnClickListener(this);
@@ -144,7 +145,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         Button undo = findViewById(R.id.undo_Button);
         undo.setOnClickListener(this);
 
-
+        thrownAmount = findViewById(R.id.thrown_textView);
     }
 
     //    Preferences
@@ -203,8 +204,8 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
            final String number = pushed.getText().toString();
            AlertDialog alterDialog = new AlertDialog.Builder(this).create();
 
-
            alterDialog.setButton(AlertDialog.BUTTON_NEUTRAL, String.valueOf(number), new DialogInterface.OnClickListener() {
+               @SuppressLint("SetTextI18n")
                @Override
                public void onClick(DialogInterface dialog, int which) {
                    int punkte = punktestand.get(playerTurn);
@@ -217,6 +218,10 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                            punktestand.set(playerTurn, punkte);
                            dartsAvailable--;
 
+                            int alreadyThrown = Integer.parseInt(thrownAmount.getText().toString());
+                            alreadyThrown = alreadyThrown + Integer.parseInt(number);
+                            thrownAmount.setText(String.valueOf(alreadyThrown));
+                            lastDarts.add(Integer.parseInt(number));
 
                            if (dartsAvailable == 0) {
                                playerTurn++;
@@ -245,6 +250,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                }
            });
            alterDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Double"+number, new DialogInterface.OnClickListener() {
+               @SuppressLint("ShowToast")
                @Override
                public void onClick(DialogInterface dialog, int which) {
                    int punkte = punktestand.get(playerTurn);
@@ -257,6 +263,12 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                            points.setText(String.valueOf(punkte));
                            punktestand.set(playerTurn, punkte);
                            dartsAvailable--;
+
+                           int alreadyThrown = Integer.parseInt(thrownAmount.getText().toString());
+                           alreadyThrown = alreadyThrown + Integer.parseInt(number);
+                           thrownAmount.setText(String.valueOf(alreadyThrown));
+                           lastDarts.add(Integer.parseInt(number)*2);
+
                            if (punkte == 0) {
                                Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
                                Intent intent = new Intent(PlayDart.this, endScreen.class);
@@ -349,6 +361,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         }else if(v.getId() == R.id.bull_Button){
             AlertDialog ad = new AlertDialog.Builder(this).create();
             ad.setButton(AlertDialog.BUTTON_NEGATIVE,"Single Bull", new DialogInterface.OnClickListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     int punkte = punktestand.get(playerTurn);
@@ -367,8 +380,6 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                             Toast.makeText(PlayDart.this, "Der nächste Spieler ist an der Reihe", Toast.LENGTH_LONG).show();
                             playerTextView.setText(MainActivity.takenPlayers.get(playerTurn).getName().toString());
                             points.setText(punktestand.get(playerTurn).toString());
-                        }else{
-
                         }
                     }else{
                         Toast.makeText(PlayDart.this, "Leider haben Sie sich überworfen, der nächste ist an der Reihe!", Toast.LENGTH_LONG).show();
@@ -410,6 +421,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void endGame(String winnerName){
         ArrayList<String> placements = new ArrayList<>();
         int[] temp = new int[punktestand.size()];
