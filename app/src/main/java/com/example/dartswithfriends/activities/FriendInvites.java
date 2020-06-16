@@ -46,9 +46,7 @@ import java.util.Map;
 
 public class FriendInvites extends AppCompatActivity implements View.OnClickListener{
 
-    private static final int RQ_READ = 84232;
-    private static final int RQ_WRITE = 532;
-    private static final int RQ_SENDSMS = 6363;
+
     private Button switchToMid;
     private TableLayout screen;
 
@@ -62,6 +60,9 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 
     private static final int RQ_READSMS = 55675;
     private static final int RQ_RECEIVESMS = 12343;
+    private static final int RQ_READ = 84232;
+    private static final int RQ_WRITE = 532;
+    private static final int RQ_SENDSMS = 5432523;
     private static FriendInvites instance;
     ListView listView;
     public static List<SMS> SMS_invites;
@@ -116,6 +117,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         } else {
             SMS_invites = readSMS();
         }
+
         MyReceiver myReceiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,intentFilter);
@@ -138,23 +140,23 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.accept) {
+            accept = true;
+            current = item;
             if (checkSelfPermission(Manifest.permission.SEND_SMS)
                     != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_SMS},RQ_SENDSMS);
+                requestPermissions(new String[]{Manifest.permission.SEND_SMS},RQ_SENDSMS);
             } else {
-                accept = true;
-                current = item;
                 sendSMS(accept, current);
             }
             return true;
         }
         if (item.getItemId() == R.id.deny) {
+            accept = false;
+            current = item;
             if (checkSelfPermission(Manifest.permission.SEND_SMS)
                     != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_SMS},RQ_SENDSMS);
+                requestPermissions(new String[]{Manifest.permission.SEND_SMS},RQ_SENDSMS);
             } else {
-                accept = false;
-                current = item;
                 sendSMS(accept, current);
             }
 
@@ -181,21 +183,6 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
             return true;
         }
         return super.onContextItemSelected(item);
-    }
-
-    private SMS findSMS(String s){
-        String[]arr = s.split(";");
-        String msg = arr[0];
-        String number = arr[1];
-
-        for(int i = 0; i < SMS_invites.size(); ++i){
-            if(SMS_invites.get(i).getMsg().equals(msg)){
-                if(SMS_invites.get(i).getNumber().equals(number)){
-                    return SMS_invites.get(i);
-                }
-            }
-        }
-        return null;
     }
 
 //    Permissions
@@ -238,10 +225,6 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
                 sendSMS(accept, current);
             }
         }
-    }
-
-    public static FriendInvites getInstance(){
-        return instance;
     }
 
     @Override
@@ -298,6 +281,10 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    public static FriendInvites getInstance(){
+        return instance;
+    }
+
     public void writeSMSinvites(List<SMS> list) {
         if(list == null){
             return;
@@ -344,6 +331,22 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 
         return list;
     }
+
+    private SMS findSMS(String s){
+        String[]arr = s.split(";");
+        String msg = arr[0];
+        String number = arr[1];
+
+        for(int i = 0; i < SMS_invites.size(); ++i){
+            if(SMS_invites.get(i).getMsg().equals(msg)){
+                if(SMS_invites.get(i).getNumber().equals(number)){
+                    return SMS_invites.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
 
     private void sendSMS(boolean b, MenuItem item){
         if(b){

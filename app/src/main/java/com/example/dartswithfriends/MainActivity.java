@@ -236,9 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playersListView.setAdapter(aa);
     }
 
-    public void onRequestPermissionsResult( int requestCode,
-                                            String[] permissions,
-                                            int[] grantResults ) {
+    public void onRequestPermissionsResult( int requestCode, String[] permissions, int[] grantResults ) {
         super.onRequestPermissionsResult(requestCode,
                 permissions,
                 grantResults);
