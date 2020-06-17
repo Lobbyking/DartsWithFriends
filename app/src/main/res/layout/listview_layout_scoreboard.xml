@@ -26,6 +26,7 @@
                 android:id="@+id/bind1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
                 android:text=" - "
                 android:textSize="24sp" />
 
@@ -41,6 +42,7 @@
                 android:id="@+id/bind2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
                 android:text=" - "
                 android:textSize="24sp" />
 
@@ -56,6 +58,7 @@
                 android:id="@+id/bind3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
                 android:text=" - "
                 android:textSize="24sp" />
 

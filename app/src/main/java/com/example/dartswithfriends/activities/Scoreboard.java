@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -35,7 +36,9 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +71,9 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         instance = this;
         screen = findViewById(R.id.right_screen);
         scoreboard = findViewById(R.id.Spiele_listView);
+
+        matches = readScores();
+        writeToLv();
 
 
         //        Preferences
@@ -248,24 +254,24 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             String line = br.readLine();
 
             while(line != null || !line.equals("")){
-                HashMap<Player, Integer> game = new HashMap<>();
+                HashMap<Player, Double> game = new HashMap<>();
                 Double lon = 0.0;
                 Double lat = 0.0;
 
-                String[] arr = line.split(";");
+                String[] arr = line.split("-");
 
                 for(int i = 0; i < arr.length; ++i){
-                    if (arr[i].matches(".*[a-z].*")) {
-                        Player p = new Player(arr[i],Integer.valueOf(arr[i+1]));
-                        p.setAverage(Double.valueOf(arr[i+2]));
-                        Integer score = Integer.valueOf(arr[i+4]);
-                        game.put(p,score);
-                    }else if(i+1 == arr.length){
-                        lat = Double.valueOf(arr[i]);
-                    }else{
-                        lon = Double.valueOf(arr[i]);
-                    }
+
+                    String[] einzPlayer = arr[i].split(";");
+
+                        Player p = new Player(einzPlayer[0],Integer.valueOf(einzPlayer[2]));
+                        Double d = new Double(einzPlayer[1]);
+                        game.put(p,d);
                 }
+
+                //lat = Double.valueOf(arr[i]);
+
+                //lon = Double.valueOf(arr[i]);
 
                 list.add(new Match(game,lon,lat));
 
@@ -277,31 +283,22 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         return list;
     }
 
-    public void writeScores(List<Match> list) {
-        if(list == null){
-            return;
-        }
-        String state = Environment.getExternalStorageState();
-        if (! state . equals(Environment.MEDIA_MOUNTED)) return;
-        File outFile = getExternalFilesDir(null);
-        String path = outFile.getAbsolutePath();
-        String fullPath = path + File. separator + "Scores.txt";
-        try {
-            PrintWriter out = new PrintWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(fullPath)));
-            for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i).toString()+"\n");
-            }
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-        }
-    }
-
     public void switchScreen()
     {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
+    public void writeToLv()
+    {
+        List<Match> inLv = new ArrayList<>();
+        for(int i = matches.size(); i > 0;--i)
+        {
+            inLv.add(matches.get(i-1));
+        }
+
+        lvAdapter = new ScoreBoardLvAdapter(this, R.layout.listview_layout_scoreboard , inLv);
+        scoreboard.setAdapter(lvAdapter);
+    }
+
 }

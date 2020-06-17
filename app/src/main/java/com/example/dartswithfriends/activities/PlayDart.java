@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +23,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dartswithfriends.MainActivity;
+import com.example.dartswithfriends.Match;
 import com.example.dartswithfriends.Player;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PlayDart extends AppCompatActivity  implements View.OnClickListener{
@@ -272,6 +280,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                            lastDarts.add(Integer.parseInt(number)*2);
 
                            if (punkte == 0) {
+                               writeScores();
                                Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
                                Intent intent = new Intent(PlayDart.this, endScreen.class);
                                startActivity(intent);
@@ -443,6 +452,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                         lastDarts.add(50);
 
                         if (punkte == 0) {
+                            writeScores();
                             Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
                             Intent intent = new Intent(PlayDart.this, endScreen.class);
                             startActivity(intent);
@@ -546,6 +556,34 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                 endScreen.player4_avg.setText(String.valueOf(averages.get(3)));
                 endScreen.player4_points.setText(String.valueOf(temp[3]));
             }
+        }
+    }
+    public void writeScores() {
+        ArrayList list = MainActivity.takenPlayers;
+
+        //AVERAGES MÜSSEN NU EINEEEE
+
+        if(list == null){
+            return;
+        }
+        String state = Environment.getExternalStorageState();
+        if (! state . equals(Environment.MEDIA_MOUNTED)) return;
+        File outFile = getExternalFilesDir(null);
+        String path = outFile.getAbsolutePath();
+        String fullPath = path + File. separator + "Scores.txt";
+        try {
+            PrintWriter out = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(fullPath,true)));
+            for(int i = 0; i < list.size(); ++i){
+                out.append(list.get(i).toString()+"-");
+            }
+            //Location.getlatitude...
+            //out.append(" || ")
+            out.append("\n");
+            out.flush();
+            out.close();
+        } catch (Exception e) {
         }
     }
 }
