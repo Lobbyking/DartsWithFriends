@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.dartswithfriends.LocationAsyncTask;
 import com.example.dartswithfriends.MainActivity;
 import com.example.dartswithfriends.Match;
+import com.example.dartswithfriends.OnSwipeTouchListener;
 import com.example.dartswithfriends.Player;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
@@ -65,8 +66,6 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.right);
 
         instance = this;
-        switchToMid = findViewById(R.id.rightBackToMid_Button);
-        switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.right_screen);
         scoreboard = findViewById(R.id.Spiele_listView);
 
@@ -103,12 +102,88 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             }
         });
 
+        //SWIPE listeners
+
+        findViewById(R.id.Scoreboard_screen).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.right_screen).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.header_row).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.header_textView).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.tableRow_underline).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.underlinement_textView).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.tableRow_listView).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+        findViewById(R.id.Spiele_listView).setOnTouchListener(new OnSwipeTouchListener(Scoreboard.this) {
+            public void onSwipeRight() {
+                switchScreen();
+            }
+
+            public void onSwipeLeft() {
+
+            }
+        });
+
+
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == switchToMid.getId()){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
     }
@@ -222,5 +297,11 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             out.close();
         } catch (Exception e) {
         }
+    }
+
+    public void switchScreen()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

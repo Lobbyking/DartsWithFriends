@@ -29,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.dartswithfriends.FriendInvitesLvAdapter;
 import com.example.dartswithfriends.MainActivity;
 import com.example.dartswithfriends.MyReceiver;
+import com.example.dartswithfriends.OnSwipeTouchListener;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
 import com.example.dartswithfriends.SDCard_Save;
@@ -75,9 +76,6 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.left);
-
-        switchToMid = findViewById(R.id.leftBackToMid_Button);
-        switchToMid.setOnClickListener(this);
         screen = findViewById(R.id.left_screen);
 
         SMS_invites = new ArrayList<>();
@@ -125,6 +123,82 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
+
+
+        //ONSWIPELISTENER
+        findViewById(R.id.FriendInvites_Layout).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.left_screen).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.header_row).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.header_textView).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.tableRow_underline).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.underlinement_textView).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.tableRow_listview).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+        findViewById(R.id.Einladungen_listView).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
+            public void onSwipeRight() {
+
+            }
+
+            public void onSwipeLeft() {
+                switchScreen();
+            }
+        });
+
     }
 
 //    Context Menu
@@ -402,6 +476,12 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
             listView.setAdapter(adapter);
             writeSMSinvites(SMS_invites);
         }
+    }
+
+    public void switchScreen()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }
 

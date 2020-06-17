@@ -159,10 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setDarkMode();
 
-        switchToFriendInvites = findViewById(R.id.midToEinladungen_Button);
-        switchToFriendInvites.setOnClickListener(this);
-        switchToScoreboard = findViewById(R.id.midToSpiele_Button);
-        switchToScoreboard.setOnClickListener(this);
         SMS_Invites = new ArrayList<>();
 
         instance = MainActivity.this;
@@ -179,6 +175,162 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerNames);
         playersListView.setAdapter(aa);
+
+
+        //SWIPELISTENER
+        findViewById(R.id.Main_Layout).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.start_screen).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.header_row).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.header_textView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_Underline).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.underlinement_textView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_TextView_PlayerSelect).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.spieler_textView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_NewPlayer).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.name_textView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_HinzufügenButton).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_listViewSelectPlayer).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.players_listView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_SpielmodiWählen).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.textView4).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_Checkboxen).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
+        findViewById(R.id.tableRow_startButton).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                switchScreenRight();
+            }
+
+            public void onSwipeLeft() {
+                switchScreenLeft();
+            }
+        });
         }
 
 
@@ -187,11 +339,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == addPlayer.getId()){
             EditText playerName = findViewById(R.id.playerName_editText);
             String name = playerName.getText().toString();
-            Player p = new Player(name, 0);
-            players.add(p);
-            playerNames.add(name);
-            aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
-            playerName.setText("");
+            if(!name.equals("")) {
+                Player p = new Player(name, 0);
+                players.add(p);
+                playerNames.add(name);
+                aa = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
+                playerName.setText("");
+            }
+            else
+            {
+                Toast.makeText(this, "Bitte geben Sie einen Namen ein", Toast.LENGTH_LONG).show();
+            }
         }else if(v.getId() == startGame.getId()) {
 
             if (cb501.isChecked()) {
@@ -383,5 +541,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("-Schreiben- fick dich");
             e.printStackTrace();
         }
+    }
+
+    public void switchScreenRight()
+    {
+        Intent intent = new Intent(getApplicationContext(), FriendInvites.class);
+        startActivity(intent);
+    }
+    public void switchScreenLeft()
+    {
+        Intent intent = new Intent(getApplicationContext(), Scoreboard.class);
+        startActivity(intent);
     }
 }
