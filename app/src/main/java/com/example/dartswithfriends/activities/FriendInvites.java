@@ -277,7 +277,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         if(darkmode) {
             screen.setBackgroundColor(Color.GRAY);
         }else{
-            screen.setBackgroundColor(Color.parseColor("#20B451"));
+            screen.setBackgroundColor(Color.parseColor("#fffaaf"));
         }
     }
 

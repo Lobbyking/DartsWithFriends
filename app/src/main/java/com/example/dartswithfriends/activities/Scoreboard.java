@@ -153,7 +153,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         if(darkmode) {
             screen.setBackgroundColor(Color.GRAY);
         }else{
-            screen.setBackgroundColor(Color.parseColor("#20B451"));
+            screen.setBackgroundColor(Color.parseColor("#fffaaf"));
         }
     }
 

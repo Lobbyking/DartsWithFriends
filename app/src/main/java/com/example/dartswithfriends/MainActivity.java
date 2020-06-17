@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             start_screen.setBackgroundColor(Color.GRAY);
 
         }else{
-            start_screen.setBackgroundColor(Color.parseColor("#20B451"));
+            start_screen.setBackgroundColor(Color.parseColor("#fffaaf"));
 
         }
     }

@@ -185,7 +185,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         if(darkmode) {
             screen.setBackgroundColor(Color.GRAY);
         }else{
-            screen.setBackgroundColor(Color.parseColor("#20B451"));
+            screen.setBackgroundColor(Color.parseColor("#fffaaf"));
         }
     }
 
