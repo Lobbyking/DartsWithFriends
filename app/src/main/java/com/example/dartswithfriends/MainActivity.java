@@ -286,15 +286,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switchScreenLeft();
             }
         });
-        findViewById(R.id.players_listView).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
-            public void onSwipeRight() {
-                switchScreenRight();
-            }
-
-            public void onSwipeLeft() {
-                switchScreenLeft();
-            }
-        });
         findViewById(R.id.tableRow_SpielmodiWählen).setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
             public void onSwipeRight() {
                 switchScreenRight();

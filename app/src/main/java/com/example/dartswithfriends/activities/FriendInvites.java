@@ -189,15 +189,6 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
                 switchScreen();
             }
         });
-        findViewById(R.id.Einladungen_listView).setOnTouchListener(new OnSwipeTouchListener(FriendInvites.this) {
-            public void onSwipeRight() {
-
-            }
-
-            public void onSwipeLeft() {
-                switchScreen();
-            }
-        });
 
     }
 
