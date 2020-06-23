@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -69,6 +70,7 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 ((TextView) listItem.findViewById(R.id.bind2)).setText(" ");
                 ((TextView) listItem.findViewById(R.id.bind3)).setText(" ");
             }
+            ((TextView) listItem.findViewById(R.id.adresse_textview)).setText(match.adresse);
         }
 
         else if(match.game.size()==2)
@@ -110,6 +112,7 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
             ((TextView) listItem.findViewById(R.id.scoreboard_player3_txtView)).setText(" ");
             ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
             ((TextView) listItem.findViewById(R.id.scoreboard_averageP3_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.adresse_textview)).setText(match.adresse);
         }
 
         else if(match.game.size()==3)
@@ -149,6 +152,7 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
             //Numoi andere Player
             ((TextView) listItem.findViewById(R.id.scoreboard_player4_txtView)).setText(" ");
             ((TextView) listItem.findViewById(R.id.scoreboard_averageP4_txtView)).setText(" ");
+            ((TextView) listItem.findViewById(R.id.adresse_textview)).setText(match.adresse);
         }
 
         else if(match.game.size()==4)
@@ -185,6 +189,7 @@ public class ScoreBoardLvAdapter extends BaseAdapter {
                 }
                 ++counter;
             }
+            ((TextView) listItem.findViewById(R.id.adresse_textview)).setText(match.adresse);
         }
         return listItem;
     }

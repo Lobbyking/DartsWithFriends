@@ -1,10 +1,13 @@
 package com.example.dartswithfriends.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,6 +33,7 @@ import com.example.dartswithfriends.Player;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
 import com.example.dartswithfriends.ScoreBoardLvAdapter;
+import com.example.dartswithfriends.Standort;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -270,9 +275,38 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
                 }
 
                 Double lat = Double.valueOf(arr[c].split(";")[0]);
-                Double lon = Double.valueOf(arr[c].split(";")[1]);;
+                Double lon = Double.valueOf(arr[c].split(";")[1]);
+                Standort sta = new Standort(0,0,null);
 
-                list.add(new Match(game,lon,lat));
+                if(isNetworkAvailable())
+                {
+                    LocationAsyncTask locationAsyncTask = null;
+                    if(ActivityCompat.checkSelfPermission(Scoreboard.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 469);
+                    }
+                    else
+                    {
+
+                        locationAsyncTask = new LocationAsyncTask(String.valueOf(lat),String.valueOf(lon));
+                        locationAsyncTask.execute("getLocation");
+                    }
+
+                    try
+                    {
+                        Standort newStandort = locationAsyncTask.get();
+                        sta = newStandort;
+
+                    }
+                    catch (InterruptedException | ExecutionException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                list.add(new Match(game,lon,lat,sta.address));
 
                 line = br.readLine();
             }
@@ -298,6 +332,12 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
 
         lvAdapter = new ScoreBoardLvAdapter(this, R.layout.listview_layout_scoreboard , inLv);
         scoreboard.setAdapter(lvAdapter);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnected();
     }
 
 }

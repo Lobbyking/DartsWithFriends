@@ -7,6 +7,7 @@ public class Match {
     HashMap<Player,Double> game;
     Double longitude;
     Double latitude;
+    String adresse;
 
     public Match(HashMap<Player, Double> game, Double longitude, Double latitude) {
         this.game = game;
@@ -14,6 +15,12 @@ public class Match {
         this.latitude = latitude;
     }
 
+    public Match(HashMap<Player, Double> game, Double longitude, Double latitude, String adresse) {
+        this.game = game;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.adresse=adresse;
+    }
 
     public Double getLongitude() {
         return longitude;
