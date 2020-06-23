@@ -100,7 +100,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Double longitude = matches.get(pos).getLongitude();
                 Double latitude = matches.get(pos).getLatitude();
-                String poss="geo:"+longitude+","+latitude+"?z=15";
+                String poss="geo:"+latitude+","+longitude+"?z=15";
                 Uri uri = Uri.parse(poss);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(uri);
@@ -255,23 +255,22 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
 
             while(line != null || !line.equals("")){
                 HashMap<Player, Double> game = new HashMap<>();
-                Double lon = 0.0;
-                Double lat = 0.0;
 
                 String[] arr = line.split("-");
 
-                for(int i = 0; i < arr.length; ++i){
+                int c=0;
+                for(int i = 0; i < arr.length-1; ++i){
 
                     String[] einzPlayer = arr[i].split(";");
 
                         Player p = new Player(einzPlayer[0],Integer.valueOf(einzPlayer[2]));
                         Double d = new Double(einzPlayer[1]);
                         game.put(p,d);
+                        c++;
                 }
 
-                //lat = Double.valueOf(arr[i]);
-
-                //lon = Double.valueOf(arr[i]);
+                Double lat = Double.valueOf(arr[c].split(";")[0]);
+                Double lon = Double.valueOf(arr[c].split(";")[1]);;
 
                 list.add(new Match(game,lon,lat));
 
