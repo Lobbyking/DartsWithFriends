@@ -198,6 +198,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
                 switchScreen();
             }
         });
+
     }
 
 //    Context Menu
