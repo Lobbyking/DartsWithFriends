@@ -261,7 +261,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
             while(line != null || !line.equals("")){
                 HashMap<Player, Double> game = new HashMap<>();
 
-                String[] arr = line.split("-");
+                String[] arr = line.split("&");
 
                 int c=0;
                 for(int i = 0; i < arr.length-1; ++i){

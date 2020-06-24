@@ -593,7 +593,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                     new OutputStreamWriter(
                             new FileOutputStream(fullPath,true)));
             for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i).toString()+"-");
+                out.append(list.get(i).toString()+"&");
             }
             getlatlon();
             out.append(lat);
