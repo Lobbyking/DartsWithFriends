@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int RQ_READ = 5423;
     private static final int RQ_WRITE = 23322;
+    private static final int RQ_FINE = 64356;
+    private static final int RQ_CORSE = 634634;
     private Button addPlayer;
     private Button startGame;
     public ArrayList<Player> players = new ArrayList<>();
@@ -169,12 +172,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             players = readPlayers();
         }
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},RQ_CORSE);
+        } else {
+
+        }
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},RQ_FINE);
+        } else {
+
+        }
 
         for(int i = 0; i < players.size(); ++i){
             playerNames.add(players.get(i).getName());
         }
         aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerNames);
         playersListView.setAdapter(aa);
+
+        registerForContextMenu(playersListView);
 
 
         //SWIPELISTENER
@@ -404,6 +421,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     writePlayers(players);
                 }
             }
+            if (requestCode==RQ_FINE) {
+                if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
+                    //user does not allow
+                } else {
+
+                }
+            }
+            if (requestCode==RQ_CORSE) {
+                if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED) {
+                    //user does not allow
+                } else {
+
+                }
+            }
         }
     }
 
@@ -447,6 +478,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             start_screen.setBackgroundColor(Color.parseColor("#fffaaf"));
 
         }
+    }
+
+    //Context Menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        int viewId = v.getId();
+        if (viewId == R.id.players_listView) {
+            getMenuInflater().inflate(R.menu.players_menu, menu);
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            String s = "";
+            if (info != null) {
+                long id = info.id;
+                int pos = info.position;
+                s = info != null ?
+                        playersListView.getAdapter().getItem(pos).toString() :
+                        "";
+            }
+
+            String player = findPlayer(s);
+
+            for(int i = 0; i < players.size(); ++i){
+                if(players.get(i).getName().equals(player)){
+                    players.remove(i);
+                }
+            }
+
+            playerNames.remove(player);
+
+            aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1,playerNames);
+            playersListView.setAdapter(aa);
+            writePlayers(players);
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private String findPlayer(String s){
+        String player = "";
+        for(int i = 0; i < playerNames.size(); ++i){
+            if(s.equals(playerNames.get(i))){
+                return playerNames.get(i);
+            }
+        }
+        return player;
     }
 
     public static MainActivity getInstance(){
