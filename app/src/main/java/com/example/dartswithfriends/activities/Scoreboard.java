@@ -77,6 +77,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
         screen = findViewById(R.id.right_screen);
         scoreboard = findViewById(R.id.Spiele_listView);
 
+
         matches = readScores();
         writeToLv();
 
@@ -332,6 +333,7 @@ public class Scoreboard extends AppCompatActivity implements View.OnClickListene
 
         lvAdapter = new ScoreBoardLvAdapter(this, R.layout.listview_layout_scoreboard , inLv);
         scoreboard.setAdapter(lvAdapter);
+        scoreboard.deferNotifyDataSetChanged();
     }
 
     private boolean isNetworkAvailable() {
