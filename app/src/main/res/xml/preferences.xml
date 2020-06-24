@@ -11,9 +11,4 @@
         android:defaultValue="true"
         android:key="notes"
         android:title="Nachrichten" />
-    <CheckBoxPreference
-        android:layout_width="match_parent"
-        android:defaultValue="true"
-        android:key="gps"
-        android:title="Standort" />
 </androidx.preference.PreferenceScreen>
