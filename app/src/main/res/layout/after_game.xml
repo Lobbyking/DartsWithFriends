@@ -18,15 +18,31 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="58dp"
+                android:layout_width="1dp"
                 android:layout_height="58dp"
                 android:layout_marginLeft="5px"
                 android:layout_marginTop="100px"
+                android:layout_marginRight="50dp"
                 app:srcCompat="@drawable/pos_suckt_so_richtig" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="275dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="50px"
+                android:layout_marginTop="100px"
+                android:layout_marginRight="100px"
+                app:srcCompat="@drawable/pos_suckt_so_richtig_2_0" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/winner_textView"
-                android:layout_width="216dp"
+                android:layout_width="1px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -34,15 +50,6 @@
                 android:text="!Fülltext hat gewonnen!"
                 android:textColor="#FF111111"
                 android:textSize="40dp" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="100px"
-                android:layout_marginRight="15px"
-                app:srcCompat="@drawable/pos_suckt_so_richtig_2" />
-
         </TableRow>
 
         <TableRow
@@ -62,7 +69,7 @@
                 android:id="@+id/player1_points_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="150"
+                android:layout_weight="250"
                 android:textSize="28dp" />
 
         </TableRow>
