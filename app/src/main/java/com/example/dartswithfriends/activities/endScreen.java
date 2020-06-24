@@ -116,6 +116,7 @@ public class endScreen extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.mainactivity_button){
+            MainActivity.takenPlayers.clear();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }else if(v.getId() == R.id.playagain_button){
