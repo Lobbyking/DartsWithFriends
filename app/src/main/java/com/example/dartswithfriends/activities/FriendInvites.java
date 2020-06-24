@@ -29,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.dartswithfriends.FriendInvitesLvAdapter;
 import com.example.dartswithfriends.MainActivity;
 import com.example.dartswithfriends.MyReceiver;
+import com.example.dartswithfriends.Notification;
 import com.example.dartswithfriends.OnSwipeTouchListener;
 import com.example.dartswithfriends.Preferences.MySettingsActivity;
 import com.example.dartswithfriends.R;
@@ -123,6 +124,24 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         adapter = new FriendInvitesLvAdapter(this,R.layout.listview_layout_friendinvites,SMS_invites);
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
+
+        preferenceChanged(prefs, "darkmode");
+        preferenceChanged(prefs, "notes");
+
+        Intent i = getIntent();
+        if(i != null)
+        {
+            if(i.getExtras() != null)
+            {
+                String string = i.getStringExtra("start");
+                if(string.equals("start"))
+                {
+                    Intent main = new Intent(FriendInvites.this, MainActivity.class);
+                    startActivity(main);
+                }
+            }
+        }
+
 
 
         //ONSWIPELISTENER
@@ -250,6 +269,8 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
         return super.onContextItemSelected(item);
     }
 
+
+
 //    Permissions
 
     public void onRequestPermissionsResult( int requestCode, String[] permissions, int[] grantResults ) {
@@ -308,14 +329,24 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 
     //    Preferences
     private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
-        Map<String, ?> allEntries = sharedPrefs.getAll();
+
         if(key.equals("darkmode")) {
             darkmode = sharedPrefs.getBoolean(key, false);
             setDarkMode();
         }else if(key.equals("notes")){
             notifications = sharedPrefs.getBoolean(key,true);
-        }else if(key.equals("gps")){
-            gps = sharedPrefs.getBoolean(key,true);
+
+            if(notifications)
+            {
+                Intent i = new Intent(FriendInvites.this, Notification.class);
+                startService(i);
+            }
+            else
+            {
+                Intent i = new Intent(FriendInvites.this, Notification.class);
+                stopService(i);
+            }
+
         }
     }
 
@@ -388,7 +419,7 @@ public class FriendInvites extends AppCompatActivity implements View.OnClickList
 
             while(line != null || !line.equals("")){
                 String[] arr = line.split(";");
-                list.add(new SMS(arr[0],arr[1]));
+                list.add(new SMS(arr[0],arr[1],Boolean.parseBoolean(arr[2])));
                 line = br.readLine();
             }
         } catch (Exception e) {

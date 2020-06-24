@@ -47,8 +47,8 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
         if(msg.contains("Dart")){
-            arr.add(new SMS(msg,phoneNo));
-            fi.SMS_invites.add(new SMS(msg,phoneNo));
+            arr.add(new SMS(msg,phoneNo, true));
+            fi.SMS_invites.add(new SMS(msg,phoneNo, true));
             fi.updateListView();
             writeSMSinvites(arr);
         }

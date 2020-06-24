@@ -94,6 +94,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startGame.setOnClickListener(this);
         cb301 = findViewById(R.id.cB301_checkBox);
         cb501 = findViewById(R.id.cB501_checkBox);
+        start_screen = findViewById(R.id.start_screen);
+
+        if(FriendInvites.SMS_invites == null)
+        {
+            Intent bruh = new Intent(MainActivity.this, FriendInvites.class);
+            bruh.putExtra("start", "start");
+            startActivity(bruh);
+        }
+
 
         cb301.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -153,7 +162,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
 
-        start_screen = findViewById(R.id.start_screen);
+        preferenceChanged(prefs, "darkmode");
+        preferenceChanged(prefs, "notes");
+
 
 
         darkmode = prefs.getBoolean("darkmode", false);
@@ -440,12 +451,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //    Preferences
     private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
-        Map<String, ?> allEntries = sharedPrefs.getAll();
+
         if(key.equals("darkmode")) {
             darkmode = sharedPrefs.getBoolean(key, false);
             setDarkMode();
         }else if(key.equals("notes")){
             notifications = sharedPrefs.getBoolean(key,true);
+
+
+
         }
     }
 
