@@ -43,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,10 +62,11 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
 
     int playerTurn = 0;
     int dartsAvailable = 3;
-    public ArrayList<Integer> punktestand = new ArrayList<>();
+    public static ArrayList<Integer> punktestand;
+    public static ArrayList<String> platzierungen = new ArrayList<>();
     TextView points;
     TextView playerTextView;
-    private ArrayList<Double> gameAverage = new ArrayList<>();
+    //private ArrayList<Double> gameAverage = new ArrayList<>();
     private TextView thrownAmount;
     private ArrayList<Double> averages = new ArrayList<>();
     private ArrayList<Integer> lastDarts = new ArrayList<>();
@@ -171,6 +173,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
         undo.setOnClickListener(this);
 
         thrownAmount = findViewById(R.id.thrown_textView);
+
     }
 
     //    Preferences
@@ -214,7 +217,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
     }
 
     public void startGame(int points, ArrayList<Player> takenPlayers){
-
+        punktestand = new ArrayList<>();
         for(int i = 0; i<takenPlayers.size(); i++){
             punktestand.add(points);
             averages.add(0.0);
@@ -297,12 +300,8 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
 
                            if (punkte == 0) {
                                writeScores();
-                               Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
-                               Intent intent = new Intent(PlayDart.this, endScreen.class);
-                               startActivity(intent);
                                endGame(MainActivity.takenPlayers.get(playerTurn).getName());
-
-
+                               return;
                            }
 
                            if (dartsAvailable == 0) {
@@ -469,12 +468,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
 
                         if (punkte == 0) {
                             writeScores();
-                            Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG);
-                            Intent intent = new Intent(PlayDart.this, endScreen.class);
-                            startActivity(intent);
                             endGame(MainActivity.takenPlayers.get(playerTurn).getName());
-
-
                         }
 
 
@@ -523,32 +517,44 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
 
     @SuppressLint("SetTextI18n")
     public void endGame(String winnerName){
-        ArrayList<String> placements = new ArrayList<>();
+        //ArrayList<String> placements = new ArrayList<>();
         int[] temp = new int[punktestand.size()];
-        String[] names = new String[punktestand.size()];
+        String[] names = new String[MainActivity.takenPlayers.size()];
         for(int i = 0; i<punktestand.size(); i++){
             temp[i] = punktestand.get(i);
             names[i] = MainActivity.takenPlayers.get(i).getName();
         }
 
-        String f = names[0];
+        String ersetzen = names[0];
         int x = temp[0];
         names[0] = MainActivity.takenPlayers.get(playerTurn).getName();
         temp[0] = temp[playerTurn];
-        names[playerTurn] = f;
+        names[playerTurn] = ersetzen;
         temp[playerTurn] = x;
         for(int i = 1; i< punktestand.size(); i++){
             if(temp[i]<temp[i-1]){
-                f = names[i];
+                ersetzen = names[i];
                 int y = temp[i];
                 names[i] = names[i-1];
                 temp[i] = temp[i-1];
-                names[i-1] = f;
+                names[i-1] = ersetzen;
                 temp[i-1] = y;
             }
         }
 
-        endScreen.winner.setText(winnerName + " hat gewonnen!");
+        for(int i = 0; i<names.length; i++){
+            platzierungen.add(names[i]);
+        }
+        punktestand.clear();
+        for(int i = 0; i<temp.length; i++){
+            punktestand.add(temp[i]);
+        }
+
+        Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(PlayDart.this, endScreen.class);
+        startActivity(intent);
+
+        /* endScreen.winner.setText(winnerName + " hat gewonnen!");
 
         for(int i = 0; i < punktestand.size(); i++) {
             if(i==0) {
@@ -572,8 +578,9 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                 endScreen.player4_avg.setText(String.valueOf(averages.get(3)));
                 endScreen.player4_points.setText(String.valueOf(temp[3]));
             }
-        }
+        } */
     }
+
     public void writeScores() {
         ArrayList list = MainActivity.takenPlayers;
 
@@ -592,7 +599,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                     new OutputStreamWriter(
                             new FileOutputStream(fullPath,true)));
             for(int i = 0; i < list.size(); ++i){
-                out.append(list.get(i).toString()+"-");
+                out.append(list.get(i).toString()+"&");
             }
             getlatlon();
             out.append(lat);

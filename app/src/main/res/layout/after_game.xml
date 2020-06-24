@@ -18,15 +18,31 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="58dp"
+                android:layout_width="1dp"
                 android:layout_height="58dp"
                 android:layout_marginLeft="5px"
                 android:layout_marginTop="100px"
+                android:layout_marginRight="50dp"
                 app:srcCompat="@drawable/pos_suckt_so_richtig" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="275dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="300px"
+                android:layout_marginTop="100px"
+                android:layout_marginRight="100px"
+                app:srcCompat="@drawable/pos_suckt_so_richtig_2_0" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/winner_textView"
-                android:layout_width="216dp"
+                android:layout_width="1px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -34,15 +50,6 @@
                 android:text="!Fülltext hat gewonnen!"
                 android:textColor="#FF111111"
                 android:textSize="40dp" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="100px"
-                android:layout_marginRight="15px"
-                app:srcCompat="@drawable/pos_suckt_so_richtig_2" />
-
         </TableRow>
 
         <TableRow
@@ -52,7 +59,7 @@
 
             <TextView
                 android:id="@+id/player1_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="20px"
@@ -60,28 +67,23 @@
 
             <TextView
                 android:id="@+id/player1_points_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="150"
-                android:textSize="28dp" />
-
-            <TextView
-                android:id="@+id/player1_avg_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="28dp" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50px"
-            android:paddingTop="20px">
+            android:paddingTop="20px"
+            android:weightSum="2">
 
             <TextView
                 android:id="@+id/player2_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="60px"
@@ -89,14 +91,7 @@
 
             <TextView
                 android:id="@+id/player2_points_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="150"
-                android:textSize="28dp" />
-
-            <TextView
-                android:id="@+id/player2_avg_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="28dp" />
@@ -111,7 +106,7 @@
 
             <TextView
                 android:id="@+id/player3_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="60px"
@@ -119,17 +114,11 @@
 
             <TextView
                 android:id="@+id/player3_points_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="150"
-                android:textSize="28dp" />
-
-            <TextView
-                android:id="@+id/player3_avg_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="28dp" />
+
         </TableRow>
 
         <TableRow
@@ -140,7 +129,7 @@
 
             <TextView
                 android:id="@+id/player4_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="60px"
@@ -148,17 +137,11 @@
 
             <TextView
                 android:id="@+id/player4_points_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="150"
-                android:textSize="28dp" />
-
-            <TextView
-                android:id="@+id/player4_avg_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="28dp" />
+
         </TableRow>
 
         <TableRow
