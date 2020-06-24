@@ -102,15 +102,19 @@ public class endScreen extends AppCompatActivity implements View.OnClickListener
             player2.setText("2. Platz " + PlayDart.platzierungen.get(1));
             //player2_avg.setText(avges.get(1));
             player2_points.setText(PlayDart.punktestand.get(1).toString());
-        }else if(MainActivity.takenPlayers.size()>2) {
+        }
+        if(MainActivity.takenPlayers.size()>2) {
             player3.setText("3. Platz " +PlayDart.platzierungen.get(2));
             //player3_avg.setText(avges.get(2));
             player3_points.setText(PlayDart.punktestand.get(2).toString());
-        }else if(MainActivity.takenPlayers.size()>3) {
+        }
+        if(MainActivity.takenPlayers.size()>3) {
             player4.setText("4.Platz " + PlayDart.platzierungen.get(3));
             //player4_avg.setText(avges.get(3));
             player4_points.setText(PlayDart.punktestand.get(3).toString());
         }
+        PlayDart.platzierungen.clear();
+        PlayDart.punktestand.clear();
     }
 
     @Override

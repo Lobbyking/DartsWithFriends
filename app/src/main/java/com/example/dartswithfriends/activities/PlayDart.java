@@ -43,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -300,6 +301,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                            if (punkte == 0) {
                                writeScores();
                                endGame(MainActivity.takenPlayers.get(playerTurn).getName());
+                               return;
                            }
 
                            if (dartsAvailable == 0) {
@@ -523,25 +525,29 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
             names[i] = MainActivity.takenPlayers.get(i).getName();
         }
 
-        String f = names[0];
+        String ersetzen = names[0];
         int x = temp[0];
         names[0] = MainActivity.takenPlayers.get(playerTurn).getName();
         temp[0] = temp[playerTurn];
-        names[playerTurn] = f;
+        names[playerTurn] = ersetzen;
         temp[playerTurn] = x;
         for(int i = 1; i< punktestand.size(); i++){
             if(temp[i]<temp[i-1]){
-                f = names[i];
+                ersetzen = names[i];
                 int y = temp[i];
                 names[i] = names[i-1];
                 temp[i] = temp[i-1];
-                names[i-1] = f;
+                names[i-1] = ersetzen;
                 temp[i-1] = y;
             }
         }
 
         for(int i = 0; i<names.length; i++){
             platzierungen.add(names[i]);
+        }
+        punktestand.clear();
+        for(int i = 0; i<temp.length; i++){
+            punktestand.add(temp[i]);
         }
 
         Toast.makeText(PlayDart.this, MainActivity.takenPlayers.get(playerTurn).getName() + " hat gewonnen!", Toast.LENGTH_LONG).show();
