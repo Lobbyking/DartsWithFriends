@@ -539,6 +539,7 @@ public class PlayDart extends AppCompatActivity  implements View.OnClickListener
                 temp[i] = temp[i-1];
                 names[i-1] = ersetzen;
                 temp[i-1] = y;
+                i= 1;
             }
         }
 
