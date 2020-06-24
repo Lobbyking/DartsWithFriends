@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         preferenceChanged(prefs, "notes");
 
 
-
         darkmode = prefs.getBoolean("darkmode", false);
         notifications = prefs.getBoolean("notes", true);
         gps = prefs.getBoolean("gps", true);

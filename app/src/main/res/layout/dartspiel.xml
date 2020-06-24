@@ -243,6 +243,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
                 android:background="#4CAF50"
+                android:clickable="false"
+                android:enabled="false"
                 android:fontFamily="@font/roboto"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
