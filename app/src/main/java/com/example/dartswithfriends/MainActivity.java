@@ -446,8 +446,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setDarkMode();
         }else if(key.equals("notes")){
             notifications = sharedPrefs.getBoolean(key,true);
-        }else if(key.equals("gps")){
-            gps = sharedPrefs.getBoolean(key,true);
         }
     }
 
